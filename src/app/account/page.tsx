@@ -31,7 +31,7 @@ const mockOrders = [
   {
     id: "ER-2026-0042",
     date: "Mar 8, 2026",
-    product: "Volt X1",
+    product: "EFO EM8 Elektro Chopper",
     status: "In Transit",
     total: 24990,
   },
@@ -134,11 +134,11 @@ export default function AccountPage() {
               <div>
                 <h2 className="mb-6 text-lg font-medium">Registered Vehicles</h2>
                 <Link
-                  href="/support/volt-x1"
+                  href="/support/efo-em8-elektro-chopper"
                   className="flex items-center justify-between rounded-xl border border-border p-6 transition-colors hover:bg-card"
                 >
                   <div>
-                    <span className="font-medium">Volt X1</span>
+                    <span className="font-medium">EFO EM8 Elektro Chopper</span>
                     <span className="mt-1 block text-sm text-foreground-secondary">
                       VIN: EB-2026-0042 · Registered Mar 2026
                     </span>
@@ -152,7 +152,7 @@ export default function AccountPage() {
               <div className="space-y-3">
                 <h2 className="mb-6 text-lg font-medium">Downloads</h2>
                 {[
-                  "Vehicle Manual — Volt X1",
+                  "Fahrzeughandbuch — EFO EM8",
                   "Digital Warranty Certificate",
                   "Maintenance Guide",
                   "Tutorial Videos",

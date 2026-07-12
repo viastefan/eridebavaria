@@ -46,22 +46,22 @@ export function CTA() {
       <div className="section-padding relative">
         <div ref={contentRef} className="mx-auto max-w-4xl text-center">
           <span className="mb-6 block text-xs font-medium uppercase tracking-[0.3em] text-accent">
-            The Future Awaits
+            Die Zukunft wartet
           </span>
           <h2 className="heading-display text-gradient">
-            Become Part of
+            Werde Teil der
             <br />
-            the Future.
+            Zukunft.
           </h2>
           <p className="mx-auto mt-8 max-w-lg text-lg text-foreground-secondary">
-            Join thousands across Europe who have already chosen electric
-            mobility without compromise.
+            Tausende in Europa haben sich bereits für emissionsfreie Mobilität
+            ohne Kompromisse entschieden.
           </p>
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link href="/shop">
-              <Button>Explore Collection</Button>
+              <Button>Kollektion entdecken</Button>
             </Link>
-            <Button variant="secondary">Book a Test Drive</Button>
+            <Button variant="secondary">Probefahrt buchen</Button>
           </div>
         </div>
       </div>

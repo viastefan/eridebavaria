@@ -38,7 +38,7 @@ const megaSections: { title: string; links: MegaLink[] }[] = [
       { label: "Vehicle Finder", href: "/shop", image: products[0].images[0] },
       { label: "Compare Vehicles", href: "/compare", image: products[1].images[0] },
       { label: "Accessories", href: "/shop?category=accessories", image: categories[5].image },
-      { label: "Support", href: "/support/volt-x1", image: categories[0].image },
+      { label: "Support", href: "/support/efo-em8-elektro-chopper", image: categories[3].image },
     ],
   },
 ];

@@ -42,9 +42,9 @@ export function WhyChooseUs() {
     <section ref={sectionRef} className="relative py-32 md:py-48">
       <div className="section-padding">
         <SectionHeading
-          label="Why eRide"
-          title="Built Different"
-          description="Every detail considered. Every promise kept."
+          label="Warum eRide"
+          title="Anders gebaut"
+          description="Jedes Detail durchdacht. Jedes Versprechen gehalten."
           className="mb-20"
         />
 

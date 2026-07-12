@@ -83,22 +83,24 @@ export function Hero() {
             transition={{ duration: 1.2, delay: 2.4, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="mb-6 block text-xs font-medium uppercase tracking-[0.3em] text-accent">
-              Electric Mobility Reimagined
+              Elektromobilität. Neu definiert.
             </span>
             <h1 className="heading-display max-w-5xl text-gradient">
-              Move Beyond
+              Jenseits der
               <br />
-              Roads.
+              Straße.
             </h1>
             <p className="mt-8 max-w-md text-base leading-relaxed text-foreground-secondary md:text-lg">
-              Premium European electric vehicles engineered in Bavaria.
-              Experience movement without compromise.
+              Premium E-Fahrzeuge für Europa. Chopper, Quads, Kleinwagen und
+              Transporter — kuratiert, geprüft, persönlich beraten.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link href="/shop">
-                <Button>Explore Collection</Button>
+                <Button>Kollektion entdecken</Button>
               </Link>
-              <Button variant="secondary">Watch Experience</Button>
+              <Link href="/product/efo-em8-elektro-chopper">
+                <Button variant="secondary">EFO EM8 ansehen</Button>
+              </Link>
             </div>
           </motion.div>
         </div>

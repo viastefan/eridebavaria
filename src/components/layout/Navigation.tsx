@@ -15,10 +15,10 @@ import { useStore } from "@/lib/store";
 import { MegaMenu } from "@/components/commerce/MegaMenu";
 
 const navLinks = [
-  { label: "Collection", href: "/shop" },
-  { label: "Technology", href: "/#technology" },
+  { label: "Kollektion", href: "/shop" },
+  { label: "Technologie", href: "/#technology" },
   { label: "Stories", href: "/#stories" },
-  { label: "Compare", href: "/compare" },
+  { label: "Vergleich", href: "/compare" },
 ];
 
 export function Navigation() {

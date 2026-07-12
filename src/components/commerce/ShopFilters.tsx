@@ -25,11 +25,12 @@ const defaultFilters: FilterState = {
 };
 
 const vehicleTypes = [
-  { id: "cars", label: "Electric Cars" },
-  { id: "utility", label: "Utility Vehicles" },
+  { id: "kleinwagen", label: "Elektro Kleinwagen" },
+  { id: "transporter", label: "Transporter" },
   { id: "quads", label: "Quads" },
-  { id: "kids", label: "Kids Vehicles" },
-  { id: "scooters", label: "Scooters" },
+  { id: "motorraeder", label: "Motorräder" },
+  { id: "mopedauto", label: "Mopedauto" },
+  { id: "roller", label: "Roller & Scooter" },
 ];
 
 interface ShopFiltersProps {

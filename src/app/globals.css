@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050505;
-  --card: #101010;
-  --foreground: #ffffff;
-  --foreground-secondary: rgba(255, 255, 255, 0.65);
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #3b9eff;
-  --accent-glow: rgba(59, 158, 255, 0.35);
-  --accent-secondary: #4ade80;
+  --background: #030303;
+  --card: #0c0c0c;
+  --card-elevated: #141414;
+  --foreground: #fafafa;
+  --foreground-secondary: rgba(250, 250, 250, 0.58);
+  --border: rgba(255, 255, 255, 0.07);
+  --accent: #2d9cff;
+  --accent-glow: rgba(45, 156, 255, 0.28);
+  --accent-secondary: #5ee89a;
+  --accent-warm: #ff6b4a;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -76,14 +78,22 @@ body {
 }
 
 .glass {
-  background: rgba(16, 16, 16, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(8, 8, 8, 0.72);
+  backdrop-filter: blur(32px) saturate(1.4);
+  -webkit-backdrop-filter: blur(32px) saturate(1.4);
   border: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.6) 100%);
+  background: linear-gradient(160deg, #ffffff 0%, rgba(255, 255, 255, 0.72) 50%, rgba(45, 156, 255, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -39,7 +39,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             src={product.images[0]}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+            className="object-contain p-4 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, 33vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/10 to-transparent" />

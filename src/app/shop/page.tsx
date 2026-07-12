@@ -34,11 +34,11 @@ function ShopContent() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="text-xs uppercase tracking-[0.25em] text-accent">
-            Collection
+            Kollektion
           </span>
-          <h1 className="heading-display mt-4 text-gradient">Explore</h1>
+          <h1 className="heading-display mt-4 text-gradient">Entdecken</h1>
           <p className="mt-4 max-w-lg text-foreground-secondary">
-            Every vehicle engineered in Bavaria. Discover yours.
+            Echte E-Fahrzeuge. Geprüft. Beraten. Für dich kuratiert.
           </p>
         </motion.div>
 

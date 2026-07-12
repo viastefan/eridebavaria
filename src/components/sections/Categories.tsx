@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { categories } from "@/lib/data";
@@ -44,29 +45,32 @@ export function Categories() {
     >
       <div className="section-padding">
         <SectionHeading
-          label="Collection"
-          title="Choose Your Path"
-          description="Six categories. One vision of electric freedom."
+          label="Kollektion"
+          title="Wähle deinen Weg"
+          description="Acht Kategorien. Eine Vision elektrischer Freiheit."
           className="mb-20"
         />
 
         <div
           ref={gridRef}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
         >
           {categories.map((category, index) => (
-            <article
+            <Link
               key={category.id}
-              className="category-card card-reflection group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-2xl border border-border bg-card"
+              href={`/shop?category=${category.id}`}
               data-cursor="pointer"
+            >
+            <article
+              className="category-card card-reflection group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-2xl border border-border bg-card"
             >
               <Image
                 src={category.image}
                 alt={category.title}
                 fill
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                priority={index < 3}
+                sizes="(max-width: 768px) 50vw, 25vw"
+                priority={index < 4}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-90" />
               <div className="absolute inset-0 bg-gradient-to-br from-accent/0 via-transparent to-accent-secondary/0 opacity-0 transition-opacity duration-500 group-hover:opacity-20" />
@@ -81,6 +85,7 @@ export function Categories() {
                 <div className="mt-4 h-px w-0 bg-accent transition-all duration-500 group-hover:w-12" />
               </div>
             </article>
+            </Link>
           ))}
         </div>
       </div>

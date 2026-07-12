@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "eRide Bavaria — Electric Mobility Reimagined",
+    default: "eRide Bavaria — Elektromobilität neu definiert",
     template: "%s | eRide Bavaria",
   },
   description:
-    "Premium European electric mobility. Cinematic product experience. Engineered in Bavaria.",
+    "Premium E-Fahrzeuge für Europa. Chopper, Quads, Kleinwagen, Transporter — kuratiert und persönlich beraten.",
   metadataBase: new URL("https://eridebavaria.com"),
   openGraph: {
     title: "eRide Bavaria — Move Beyond Roads",

@@ -2,22 +2,24 @@ import Link from "next/link";
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
   Shop: [
-    { label: "Electric Cars", href: "/shop?category=cars" },
-    { label: "Utility Vehicles", href: "/shop?category=utility" },
-    { label: "Scooters", href: "/shop?category=scooters" },
-    { label: "Accessories", href: "/shop?category=accessories" },
+    { label: "Elektro Kleinwagen", href: "/shop?category=kleinwagen" },
+    { label: "Transporter", href: "/shop?category=transporter" },
+    { label: "Motorräder", href: "/shop?category=motorraeder" },
+    { label: "Quads", href: "/shop?category=quads" },
+    { label: "Mopedauto", href: "/shop?category=mopedauto" },
+    { label: "Zubehör", href: "/shop?category=zubehoer" },
   ],
-  Company: [
-    { label: "About", href: "/#stories" },
-    { label: "Technology", href: "/#technology" },
-    { label: "Compare", href: "/compare" },
-    { label: "Contact", href: "/account" },
+  Unternehmen: [
+    { label: "Über uns", href: "/#stories" },
+    { label: "Technologie", href: "/#technology" },
+    { label: "Vergleich", href: "/compare" },
+    { label: "Kontakt", href: "/account" },
   ],
-  Support: [
-    { label: "FAQ", href: "/support/volt-x1" },
-    { label: "Warranty", href: "/account" },
-    { label: "Shipping", href: "/account" },
-    { label: "Account", href: "/account" },
+  Service: [
+    { label: "FAQ", href: "/support/efo-em8-elektro-chopper" },
+    { label: "Gewährleistung", href: "/account" },
+    { label: "Ersatzteile", href: "/account" },
+    { label: "Konto", href: "/account" },
   ],
 };
 
@@ -34,8 +36,8 @@ export function Footer() {
               </span>
             </div>
             <p className="max-w-sm text-sm leading-relaxed text-foreground-secondary">
-              Premium European electric mobility. Engineered in Bavaria,
-              designed for the future of movement.
+              Premium E-Mobilität für Europa. Kuratiert, geprüft und persönlich
+              beraten — weit entfernt vom Standard-Webshop.
             </p>
           </div>
 
