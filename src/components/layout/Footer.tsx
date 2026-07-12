@@ -1,0 +1,92 @@
+import Link from "next/link";
+
+const footerLinks: Record<string, { label: string; href: string }[]> = {
+  Shop: [
+    { label: "Electric Cars", href: "/shop?category=cars" },
+    { label: "Utility Vehicles", href: "/shop?category=utility" },
+    { label: "Scooters", href: "/shop?category=scooters" },
+    { label: "Accessories", href: "/shop?category=accessories" },
+  ],
+  Company: [
+    { label: "About", href: "/#stories" },
+    { label: "Technology", href: "/#technology" },
+    { label: "Compare", href: "/compare" },
+    { label: "Contact", href: "/account" },
+  ],
+  Support: [
+    { label: "FAQ", href: "/support/volt-x1" },
+    { label: "Warranty", href: "/account" },
+    { label: "Shipping", href: "/account" },
+    { label: "Account", href: "/account" },
+  ],
+};
+
+export function Footer() {
+  return (
+    <footer className="border-t border-border bg-background">
+      <div className="section-padding py-20">
+        <div className="grid gap-16 md:grid-cols-2 lg:grid-cols-5">
+          <div className="lg:col-span-2">
+            <div className="mb-6 flex items-center gap-2">
+              <span className="text-xl font-medium">eRide</span>
+              <span className="text-xl font-light text-foreground-secondary">
+                Bavaria
+              </span>
+            </div>
+            <p className="max-w-sm text-sm leading-relaxed text-foreground-secondary">
+              Premium European electric mobility. Engineered in Bavaria,
+              designed for the future of movement.
+            </p>
+          </div>
+
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h4 className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-foreground-secondary">
+                {title}
+              </h4>
+              <ul className="space-y-3">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-foreground-secondary transition-colors hover:text-foreground"
+                      data-cursor="pointer"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
+          <p className="text-xs text-foreground-secondary">
+            © 2026 eRide Bavaria. All rights reserved.
+          </p>
+          <div className="flex gap-8">
+            <Link
+              href="#"
+              className="text-xs text-foreground-secondary hover:text-foreground"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="#"
+              className="text-xs text-foreground-secondary hover:text-foreground"
+            >
+              Terms
+            </Link>
+            <Link
+              href="#"
+              className="text-xs text-foreground-secondary hover:text-foreground"
+            >
+              Imprint
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}

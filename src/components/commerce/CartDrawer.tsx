@@ -1,0 +1,177 @@
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { X, Minus, Plus, Shield } from "lucide-react";
+import { useStore } from "@/lib/store";
+import { formatPrice, accessoryCatalog } from "@/lib/products";
+import { Button } from "@/components/ui/Button";
+
+export function CartDrawer() {
+  const {
+    cart,
+    cartOpen,
+    setCartOpen,
+    removeFromCart,
+    updateQuantity,
+    cartTotal,
+    addToCart,
+  } = useStore();
+
+  const recommendations = accessoryCatalog.slice(0, 2);
+
+  return (
+    <AnimatePresence>
+      {cartOpen && (
+        <>
+          <motion.div
+            className="fixed inset-0 z-[55] bg-background/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setCartOpen(false)}
+          />
+          <motion.aside
+            className="fixed top-0 right-0 z-[56] flex h-full w-full max-w-md flex-col border-l border-border bg-background"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="flex items-center justify-between border-b border-border p-6">
+              <h2 className="text-lg font-medium">Your Cart</h2>
+              <button
+                onClick={() => setCartOpen(false)}
+                className="rounded-full p-2 transition-colors hover:bg-card"
+                data-cursor="pointer"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              {cart.length === 0 ? (
+                <div className="flex h-full flex-col items-center justify-center text-center">
+                  <p className="text-foreground-secondary">Your cart is empty</p>
+                  <Link
+                    href="/shop"
+                    className="mt-4 text-sm text-accent hover:underline"
+                    onClick={() => setCartOpen(false)}
+                  >
+                    Explore Collection
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {cart.map((item, i) => (
+                    <motion.div
+                      key={item.id}
+                      className="flex gap-4"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                    >
+                      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-card">
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          sizes="96px"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium">{item.name}</h3>
+                        <p className="mt-1 text-sm text-foreground-secondary">
+                          {formatPrice(item.price)}
+                        </p>
+                        <div className="mt-3 flex items-center gap-3">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="rounded-full border border-border p-1 transition-colors hover:bg-card"
+                            data-cursor="pointer"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="text-sm">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="rounded-full border border-border p-1 transition-colors hover:bg-card"
+                            data-cursor="pointer"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="ml-auto text-xs text-foreground-secondary hover:text-foreground"
+                            data-cursor="pointer"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {recommendations.length > 0 && (
+                    <div className="mt-8 border-t border-border pt-8">
+                      <span className="text-xs uppercase tracking-[0.2em] text-foreground-secondary">
+                        Complete your setup
+                      </span>
+                      <div className="mt-4 space-y-3">
+                        {recommendations.map((acc) => (
+                          <div key={acc.id} className="flex items-center gap-3">
+                            <div className="relative h-12 w-12 overflow-hidden rounded-lg">
+                              <Image src={acc.image} alt={acc.name} fill className="object-cover" sizes="48px" />
+                            </div>
+                            <div className="flex-1">
+                              <span className="text-sm">{acc.name}</span>
+                              <span className="block text-xs text-foreground-secondary">
+                                {formatPrice(acc.price)}
+                              </span>
+                            </div>
+                            <button
+                              onClick={() =>
+                                addToCart({
+                                  productId: acc.id,
+                                  name: acc.name,
+                                  price: acc.price,
+                                  image: acc.image,
+                                })
+                              }
+                              className="text-xs text-accent hover:underline"
+                              data-cursor="pointer"
+                            >
+                              Add
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {cart.length > 0 && (
+              <div className="border-t border-border p-6">
+                <div className="mb-4 flex items-center gap-2 text-sm text-foreground-secondary">
+                  <Shield className="h-4 w-4" />
+                  <span>2-year warranty included</span>
+                </div>
+                <div className="mb-6 flex justify-between">
+                  <span className="text-foreground-secondary">Subtotal</span>
+                  <span className="text-xl font-medium">{formatPrice(cartTotal)}</span>
+                </div>
+                <Link href="/checkout" onClick={() => setCartOpen(false)}>
+                  <Button className="w-full">Checkout</Button>
+                </Link>
+              </div>
+            )}
+          </motion.aside>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
