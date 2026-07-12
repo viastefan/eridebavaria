@@ -1,29 +1,25 @@
 import { Hero } from "@/components/hero/Hero";
-import { Categories } from "@/components/sections/Categories";
-import { FeaturedVehicle } from "@/components/sections/FeaturedVehicle";
-import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
-import { ProductShowcase } from "@/components/sections/ProductShowcase";
-import { Accessories } from "@/components/sections/Accessories";
-import { Technology } from "@/components/sections/Technology";
-import { CompareVehicles } from "@/components/sections/CompareVehicles";
-import { CustomerStories } from "@/components/sections/CustomerStories";
-import { Newsletter } from "@/components/sections/Newsletter";
-import { CTA } from "@/components/sections/CTA";
+import { HomePromoGrid } from "@/components/sections/HomePromoGrid";
+import { HomeModelUniverse } from "@/components/sections/HomeModelUniverse";
+import { HomeFinderTeaser } from "@/components/sections/HomeFinderTeaser";
+import { HomeHighlights } from "@/components/sections/HomeHighlights";
+import { HomeAccessories } from "@/components/sections/HomeAccessories";
+import { ConsultationField } from "@/components/commerce/ConsultationField";
+import { RegionalTrust } from "@/components/sections/RegionalTrust";
+import { JournalPreview } from "@/components/sections/JournalPreview";
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-background text-foreground">
       <Hero />
-      <Categories />
-      <FeaturedVehicle />
-      <WhyChooseUs />
-      <ProductShowcase />
-      <Accessories />
-      <Technology />
-      <CompareVehicles />
-      <CustomerStories />
-      <Newsletter />
-      <CTA />
+      <HomePromoGrid />
+      <HomeModelUniverse />
+      <HomeFinderTeaser />
+      <HomeHighlights />
+      <HomeAccessories />
+      <ConsultationField />
+      <RegionalTrust />
+      <JournalPreview />
     </main>
   );
 }

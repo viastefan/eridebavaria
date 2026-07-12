@@ -84,7 +84,7 @@ export function FeaturedVehicle() {
               >
                 <span className="relative flex h-4 w-4 items-center justify-center">
                   <span className="absolute h-full w-full animate-ping rounded-full bg-accent/40" />
-                  <span className="relative h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_rgba(45,156,255,0.8)]" />
+                  <span className="relative h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_var(--accent-glow)]" />
                 </span>
                 <div className="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-xl border border-border bg-card/90 px-4 py-3 opacity-0 backdrop-blur-xl transition-all duration-300 group-hover:opacity-100">
                   <span className="block text-[10px] uppercase tracking-[0.15em] text-foreground-secondary">

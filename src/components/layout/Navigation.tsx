@@ -1,194 +1,211 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Heart, ShoppingBag, User, Menu } from "lucide-react";
+import { useTheme } from "@teispace/next-themes";
+import { Search, ShoppingBag, User } from "lucide-react";
+import { useLenis } from "@/components/providers/SmoothScrollProvider";
 import { useStore } from "@/lib/store";
-import { MegaMenu } from "@/components/commerce/MegaMenu";
-import { labels } from "@/lib/labels";
+import { mainNav, accountNav } from "@/lib/design";
 
-const navLinks = [
-  { label: "Kollektion", href: "/shop" },
-  { label: "Technologie", href: "/#technology" },
-  { label: "Geschichten", href: "/#stories" },
-  { label: "Vergleich", href: "/compare" },
-];
+interface SessionUser {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  role: string;
+}
+
+function cn(...classes: Array<string | false | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export function Navigation() {
   const pathname = usePathname();
+  const { resolvedTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const {
-    setSearchOpen,
-    setMegaMenuOpen,
-    megaMenuOpen,
-    setCartOpen,
-    cartCount,
-    wishlist,
-    compare,
-  } = useStore();
-
-  const isHome = pathname === "/";
+  const [session, setSession] = useState<SessionUser | null>(null);
+  const { setSearchOpen, setCartOpen, cartCount } = useStore();
+  const lenis = useLenis();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((d) => setSession(d.user))
+      .catch(() => {});
+  }, [pathname]);
+
+  const isCinematicPage = pathname === "/" || pathname.startsWith("/product/");
+
+  useEffect(() => {
+    const heroId = pathname === "/" ? "hero" : pathname.startsWith("/product/") ? "product-hero" : null;
+
+    const onScroll = (y: number) => {
+      const nextScrolled = y > 16;
+      let nextPastHero = true;
+      if (heroId) {
+        const hero = document.getElementById(heroId);
+        nextPastHero = hero ? y >= hero.offsetHeight - 72 : y > 400;
+      }
+      setScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
+      setPastHero((prev) => (prev === nextPastHero ? prev : nextPastHero));
+    };
+
+    if (lenis) {
+      onScroll(lenis.scroll);
+      const unsub = lenis.on("scroll", ({ scroll }) => onScroll(scroll));
+      return () => unsub();
+    }
+
+    const onWindowScroll = () => onScroll(window.scrollY);
+    onWindowScroll();
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onWindowScroll);
+  }, [lenis, pathname]);
 
   useEffect(() => {
     setMobileOpen(false);
-    setMegaMenuOpen(false);
-  }, [pathname, setMegaMenuOpen]);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [mobileOpen]);
+
+  const onCinematic = isCinematicPage && !pastHero;
+  const isDark = resolvedTheme === "dark";
 
   return (
     <>
-      <motion.header
-        className={`fixed top-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-7xl -translate-x-1/2 rounded-2xl transition-all duration-700 ${
-          scrolled || !isHome
-            ? "glass py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-            : "bg-transparent py-4"
-        }`}
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1, delay: isHome ? 2.2 : 0, ease: [0.16, 1, 0.3, 1] }}
+      <header
+        className={cn(
+          "nav-bar",
+          onCinematic && "nav-bar--cinematic",
+          onCinematic && scrolled && "nav-bar--cinematic-solid",
+          !onCinematic && scrolled && "nav-bar--solid",
+          !onCinematic && !scrolled && "nav-bar--top",
+          isDark && "nav-bar--dark"
+        )}
+        data-nav-mode={onCinematic ? "cinematic" : scrolled ? "solid" : "top"}
       >
-        <nav className="flex items-center justify-between px-6">
-          <Link href="/" className="flex items-center gap-1.5" data-cursor="pointer">
-            <span className="text-base font-medium tracking-tight">eRide</span>
-            <span className="text-base font-light text-foreground-secondary">Bavaria</span>
+        <div className="nav-bar__inner container">
+          <Link href="/" className="nav-bar__logo">
+            <span>eRide</span>
+            <span className="nav-bar__logo-muted">Bavaria</span>
           </Link>
 
-          <div className="hidden items-center gap-8 lg:flex">
-            <button
-              onClick={() => setMegaMenuOpen(!megaMenuOpen)}
-              className={`flex items-center gap-2 text-sm transition-colors ${
-                megaMenuOpen ? "text-foreground" : "text-foreground-secondary hover:text-foreground"
-              }`}
-              data-cursor="pointer"
-            >
-              <Menu className="h-4 w-4" />
-              {labels.shop}
-            </button>
-            {navLinks.map((link) => (
+          <div className="nav-bar__end">
+            <nav className="nav-bar__links hidden lg:flex" aria-label="Hauptnavigation">
+              {mainNav.map((link) => {
+                const hrefBase = link.href.split("?")[0];
+                const active = pathname === link.href || pathname.startsWith(hrefBase);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn("nav-bar__link", active && "nav-bar__link--active")}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <span className="nav-bar__divider hidden lg:block" aria-hidden="true" />
+
+            <div className="nav-bar__actions">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                className="nav-bar__icon"
+                aria-label="Suche"
+              >
+                <Search className="h-[18px] w-[18px]" strokeWidth={1.5} />
+              </button>
               <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-foreground-secondary transition-colors duration-300 hover:text-foreground"
-                data-cursor="pointer"
+                href={session ? (session.role === "ADMIN" || session.role === "EMPLOYEE" ? "/admin" : "/portal") : "/login"}
+                className="nav-bar__icon hidden sm:flex"
+                aria-label={session ? "Mein Konto" : accountNav.label}
+                title={session ? `${session.firstName ?? session.email}` : accountNav.label}
               >
-                {link.label}
+                <User className="h-[18px] w-[18px]" strokeWidth={1.5} />
               </Link>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-1 md:gap-2">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground"
-              aria-label={labels.search}
-              data-cursor="pointer"
-            >
-              <Search className="h-4 w-4" />
-            </button>
-            <Link
-              href="/account"
-              className="hidden rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground md:block"
-              aria-label={labels.wishlist}
-              data-cursor="pointer"
-            >
-              <Heart className="h-4 w-4" />
-              {wishlist.length > 0 && (
-                <span className="sr-only">{wishlist.length} auf der Merkliste</span>
-              )}
-            </Link>
-            <Link
-              href="/compare"
-              className="relative hidden rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground md:block"
-              aria-label={labels.compare}
-              data-cursor="pointer"
-            >
-              <span className="text-xs font-medium">vs</span>
-              {compare.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] text-background">
-                  {compare.length}
-                </span>
-              )}
-            </Link>
-            <button
-              onClick={() => setCartOpen(true)}
-              className="relative rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground"
-              aria-label={labels.cart}
-              data-cursor="pointer"
-            >
-              <ShoppingBag className="h-4 w-4" />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-medium text-background">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-            <Link
-              href="/account"
-              className="hidden rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground lg:block"
-              aria-label={labels.account}
-              data-cursor="pointer"
-            >
-              <User className="h-4 w-4" />
-            </Link>
-
-            <button
-              className="ml-1 flex flex-col gap-1.5 p-2 lg:hidden"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={labels.toggleMenu}
-            >
-              <span className={`block h-px w-5 bg-foreground transition-transform ${mobileOpen ? "translate-y-[5px] rotate-45" : ""}`} />
-              <span className={`block h-px w-5 bg-foreground transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-px w-5 bg-foreground transition-transform ${mobileOpen ? "-translate-y-[5px] -rotate-45" : ""}`} />
-            </button>
-          </div>
-        </nav>
-      </motion.header>
-
-      <MegaMenu />
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 flex flex-col justify-center gap-6 bg-background/98 px-8 backdrop-blur-2xl lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <button
-              onClick={() => {
-                setMegaMenuOpen(true);
-                setMobileOpen(false);
-              }}
-              className="heading-lg text-left"
-            >
-              {labels.shop}
-            </button>
-            {navLinks.map((link, i) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
+              <button
+                type="button"
+                onClick={() => setCartOpen(true)}
+                className="nav-bar__icon relative"
+                aria-label="Warenkorb"
               >
-                <Link href={link.href} className="heading-lg" onClick={() => setMobileOpen(false)}>
+                <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.5} />
+                {cartCount > 0 && <span className="nav-bar__badge">{cartCount}</span>}
+              </button>
+              <button
+                type="button"
+                className="nav-bar__menu lg:hidden"
+                onClick={() => setMobileOpen((v) => !v)}
+                aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-navigation"
+              >
+                <span className={mobileOpen ? "open" : ""} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {mobileOpen && (
+        <>
+          <button
+            type="button"
+            className={cn("nav-mobile-backdrop lg:hidden", onCinematic && "nav-mobile-backdrop--cinematic")}
+            aria-label="Menü schließen"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation"
+            className={cn("nav-mobile lg:hidden", isDark && "nav-mobile--dark", onCinematic && "nav-mobile--cinematic")}
+          >
+            <div className="container py-4">
+              {mainNav.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="nav-mobile__link"
+                  onClick={() => setMobileOpen(false)}
+                >
                   {link.label}
                 </Link>
-              </motion.div>
-            ))}
-            <Link href="/account" className="text-foreground-secondary" onClick={() => setMobileOpen(false)}>
-              {labels.account}
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              ))}
+              <Link
+                href={session ? (session.role === "ADMIN" || session.role === "EMPLOYEE" ? "/admin" : "/portal") : "/login"}
+                className="nav-mobile__link"
+                onClick={() => setMobileOpen(false)}
+              >
+                {session ? "Mein Konto" : accountNav.label}
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

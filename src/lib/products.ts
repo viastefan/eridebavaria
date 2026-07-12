@@ -5,15 +5,15 @@ const motorcycleConfig = {
   colors: [
     { id: "schwarz", name: "Tiefschwarz", hex: "#0a0a0a" },
     { id: "chrom", name: "Chrom Akzent", hex: "#c0c0c0" },
-    { id: "rot", name: "Racing Red", hex: "#8b1a1a" },
+    { id: "rot", name: "Alpinrot", hex: "#8b1a1a" },
   ],
   wheels: [
     { id: "standard", name: "21\" Cruiser", price: 0 },
-    { id: "custom", name: "Custom Speichen", price: 490 },
+    { id: "custom", name: "Speichenrad", price: 490 },
   ],
   battery: [
     { id: "72v-117ah", name: "72V 117Ah Serie", range: "150 km", price: 0 },
-    { id: "extended", name: "Extended Pack", range: "180 km", price: 890 },
+    { id: "extended", name: "Erweitertes Paket", range: "180 km", price: 890 },
   ],
   roof: [{ id: "none", name: "—", price: 0 }],
   cargoBox: [{ id: "none", name: "—", price: 0 }],
@@ -32,7 +32,7 @@ const mopedConfig = {
     { id: "lipo", name: "LiFePO4 Lithium · 120 km", range: "120 km", price: 2490 },
   ],
   roof: [
-    { id: "hardtop", name: "Hardtop", price: 0 },
+    { id: "hardtop", name: "Festes Dach", price: 0 },
     { id: "panorama", name: "Panorama-Glas", price: 990 },
   ],
   cargoBox: [{ id: "none", name: "Keine", price: 0 }],
@@ -49,8 +49,8 @@ const carConfig = {
     { id: "alloy", name: "16\" Leichtmetall", price: 690 },
   ],
   battery: [
-    { id: "standard", name: "Standard Pack", range: "120 km", price: 0 },
-    { id: "extended", name: "Long Range", range: "200 km", price: 1990 },
+    { id: "standard", name: "Standard-Paket", range: "120 km", price: 0 },
+    { id: "extended", name: "Langstrecken-Paket", range: "200 km", price: 1990 },
   ],
   roof: [{ id: "solid", name: "Festdach", price: 0 }],
   cargoBox: [{ id: "none", name: "Keine", price: 0 }],
@@ -491,6 +491,16 @@ export function formatPrice(price: number): string {
     currency: "EUR",
     minimumFractionDigits: 2,
   }).format(price);
+}
+
+/** Grobe Finanzierungsrate für Verkaufs-UI (48 Monate, unverbindlich) */
+export function formatFinancingHint(price: number): string {
+  const monthly = Math.round(price / 48);
+  return `ab ${new Intl.NumberFormat("de-AT", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(monthly)}/Monat`;
 }
 
 export const trendingSearches = [

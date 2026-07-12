@@ -36,8 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProductBySlug(slug);
   if (!product) return { title: "Nicht gefunden" };
   return {
-    title: `${product.name} — Support`,
-    description: `Support, Handbücher und Ressourcen für das ${product.name}.`,
+    title: `${product.name} — Hilfe`,
+    description: `Hilfe, Handbücher und Ressourcen für das ${product.name}.`,
   };
 }
 
@@ -58,7 +58,7 @@ export default async function SupportPage({ params }: Props) {
             {product.name}
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground">Support</span>
+          <span className="text-foreground">{labels.help}</span>
         </nav>
 
         <h1 className="heading-xl">{product.name}</h1>
@@ -96,7 +96,7 @@ export default async function SupportPage({ params }: Props) {
             {labels.supportHours}
           </p>
           <button
-            className="mt-6 rounded-full bg-foreground px-8 py-3 text-sm font-medium text-background transition-all hover:shadow-[0_0_30px_rgba(59,158,255,0.25)]"
+            className="mt-6 rounded-full bg-foreground px-8 py-3 text-sm font-medium text-background transition-all hover:shadow-[0_0_30px_var(--button-glow)]"
             data-cursor="pointer"
           >
             {labels.contactSupport}

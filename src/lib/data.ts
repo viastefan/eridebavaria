@@ -5,19 +5,19 @@ export const categories = [
   {
     id: "kleinwagen",
     title: "Elektro Kleinwagen",
-    subtitle: "Zugelassen · Urban",
+    subtitle: "AMY, Star & mehr",
     image: images.category.kleinwagen,
   },
   {
     id: "transporter",
     title: "Elektro-Transporter",
-    subtitle: "Gewerbe & Logistik",
+    subtitle: "E-Truck & Nutzfahrzeuge",
     image: images.category.transporter,
   },
   {
     id: "quads",
     title: "Quads",
-    subtitle: "Gelände & Abenteuer",
+    subtitle: "Gelände & Freizeit",
     image: images.category.quads,
   },
   {
@@ -29,14 +29,26 @@ export const categories = [
   {
     id: "mopedauto",
     title: "Mopedauto 45 km/h",
-    subtitle: "4 Sitzer & mehr",
+    subtitle: "E-GO eK4 & 4-Sitzer",
     image: images.category.mopedauto,
   },
   {
+    id: "utv",
+    title: "UTVs",
+    subtitle: "Utility & Gelände",
+    image: images.equad[0],
+  },
+  {
     id: "roller",
-    title: "Roller & Scooter",
+    title: "Roller & Moped",
     subtitle: "Stadt & Alltag",
     image: images.category.roller,
+  },
+  {
+    id: "kabinenroller",
+    title: "Kabinenroller",
+    subtitle: "TukTuk & mehr",
+    image: images.ek4[0],
   },
   {
     id: "kinder",
@@ -47,8 +59,47 @@ export const categories = [
   {
     id: "zubehoer",
     title: "Zubehör",
-    subtitle: "Alles dazu",
+    subtitle: "Ladegeräte & mehr",
     image: images.category.zubehoer,
+  },
+];
+
+export const whyChooseUs = [
+  {
+    title: "Persönliche Beratung",
+    description:
+      "Jede Bestellung wird geprüft. Wir kontaktieren Sie persönlich, besprechen Ihre Anforderungen und klären alle Details — erst danach erfolgt die Bestellung.",
+    image: images.em8[0],
+  },
+  {
+    title: "Service in Simbach",
+    description:
+      "Werkstatt, Übergabe und Einweisung vor Ort in Simbach am Inn — plus Partner in der gesamten Inn-Salzach-Region.",
+    image: images.etruck[0],
+  },
+  {
+    title: "Geprüfte Fahrzeuge",
+    description:
+      "EU-konforme E-Fahrzeuge von E-GO, EEC, EFO und weiteren Marken — inspiziert und dokumentiert.",
+    image: images.star[0],
+  },
+  {
+    title: "Ersatzteile",
+    description:
+      "Original-Ersatzteile ab Lager. Versand innerhalb von 48 Stunden — auch für ältere Modelle.",
+    image: images.equad[0],
+  },
+  {
+    title: "Gewährleistung",
+    description:
+      "Transparente Garantie auf Fahrzeuge und Komponenten. Betreuung über unsere Werkstatt in Simbach.",
+    image: images.ek4[0],
+  },
+  {
+    title: "Flexible Zahlung",
+    description:
+      "Zahlungsmethode wird nach persönlicher Rücksprache vereinbart — Überweisung, Rechnung oder Finanzierung.",
+    image: images.ev3000[0],
   },
 ];
 
@@ -59,45 +110,6 @@ export const featuredSpecs = [
   { label: "Motor", value: "8000", unit: "W", position: { top: "45%", right: "12%" } },
   { label: "Gewicht", value: "95", unit: "kg", position: { bottom: "30%", left: "15%" } },
   { label: "Zuladung", value: "150", unit: "kg", position: { bottom: "22%", right: "10%" } },
-];
-
-export const whyChooseUs = [
-  {
-    title: "Persönliche Beratung",
-    description:
-      "Jede Bestellung wird geprüft. Wir kontaktieren dich persönlich, besprechen deine Anforderungen und klären alle Details.",
-    image: images.em8[0],
-  },
-  {
-    title: "EU-weiter Versand",
-    description:
-      "Lieferung in ganz Europa. Sorgfältige Verpackung, Tracking und Premium-Handling auf Anfrage.",
-    image: images.etruck[0],
-  },
-  {
-    title: "Geprüfte Fahrzeuge",
-    description:
-      "Jedes Fahrzeug wird vor Auslieferung inspiziert und auf europäische Standards zertifiziert.",
-    image: images.star[0],
-  },
-  {
-    title: "Ersatzteile",
-    description:
-      "Original-Ersatzteile ab Lager. Versand innerhalb von 48 Stunden in ganz Europa.",
-    image: images.equad[0],
-  },
-  {
-    title: "Gewährleistung",
-    description:
-      "Umfassende Garantie auf alle Fahrzeuge. Transparent, fair und unkompliziert.",
-    image: images.ek4[0],
-  },
-  {
-    title: "Sichere Zahlung",
-    description:
-      "Flexible Zahlungsmethoden nach persönlicher Rücksprache. Apple Pay, Überweisung, Rechnung.",
-    image: images.ev3000[0],
-  },
 ];
 
 export const showcaseProducts = products.map((p) => ({
@@ -135,23 +147,23 @@ export const accessories = [
 
 export const stories = [
   {
-    title: "Von Braunau in die Berge",
+    title: "E-GO eK4 im Alltag in Simbach",
     excerpt:
-      "Wie eine Familie mit dem E-GO eK4 zwei Autos ersetzte — leise, günstig, emissionsfrei.",
+      "Wie eine Familie aus der Inn-Salzach-Region mit dem Mopedauto leise und günstig mobil bleibt.",
     image: images.ek4[0],
     readTime: "6 Min.",
   },
   {
-    title: "Der letzte Kilometer",
+    title: "E-Truck auf dem Hof",
     excerpt:
-      "Ein Logistikunternehmen in Oberösterreich senkte Emissionen um 40% mit dem E-Truck 45.",
+      "Ein Betrieb zwischen Simbach und Braunau setzt auf den E-Truck 45 — emissionsfrei im Last-Mile-Einsatz.",
     image: images.etruck[0],
     readTime: "8 Min.",
   },
   {
-    title: "Stille Horizonte",
+    title: "Chopper-Tour im Alpenvorland",
     excerpt:
-      "Mit dem EFO EM8 Chopper durch die Alpen — ohne Lärm, ohne Abgase, pure Freiheit.",
+      "Mit dem EFO EM8 durch die Region — ohne Lärm, ohne Abgase, mit Werkstatt-Support vor Ort.",
     image: images.em8[4],
     readTime: "5 Min.",
   },

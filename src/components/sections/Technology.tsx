@@ -24,7 +24,7 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             y1={i * 20}
             x2="400"
             y2={i * 20}
-            stroke="rgba(255,255,255,0.04)"
+            stroke="var(--border)"
             strokeWidth="0.5"
           />
         ))}
@@ -35,7 +35,7 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             y1="0"
             x2={i * 20}
             y2="400"
-            stroke="rgba(255,255,255,0.04)"
+            stroke="var(--border)"
             strokeWidth="0.5"
           />
         ))}
@@ -50,9 +50,9 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             width="160"
             height="120"
             rx="8"
-            stroke="#3b9eff"
+            stroke="var(--accent)"
             strokeWidth="1.5"
-            fill="rgba(59,158,255,0.05)"
+            fill="color-mix(in srgb, var(--accent) 8%, transparent)"
           />
           {[0, 1, 2, 3].map((i) => (
             <rect
@@ -62,8 +62,8 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
               width="30"
               height="90"
               rx="2"
-              fill="rgba(59,158,255,0.15)"
-              stroke="#3b9eff"
+              fill="color-mix(in srgb, var(--accent) 18%, transparent)"
+              stroke="var(--accent)"
               strokeWidth="0.5"
               className="animate-pulse-glow"
               style={{ animationDelay: `${i * 0.3}s` }}
@@ -73,7 +73,7 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             x="200"
             y="290"
             textAnchor="middle"
-            fill="rgba(255,255,255,0.4)"
+            fill="var(--foreground-secondary)"
             fontSize="10"
             letterSpacing="2"
           >
@@ -87,28 +87,28 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
         >
           <path
             d="M200 60 L200 130"
-            stroke="#4ade80"
+            stroke="var(--accent-secondary)"
             strokeWidth="1.5"
             strokeDasharray="4 4"
           />
           <polygon
             points="200,50 210,70 190,70"
-            fill="#4ade80"
+            fill="var(--accent-secondary)"
             className="animate-float"
           />
           <circle
             cx="200"
             cy="100"
             r="20"
-            stroke="#4ade80"
+            stroke="var(--accent-secondary)"
             strokeWidth="1"
-            fill="rgba(74,222,128,0.1)"
+            fill="color-mix(in srgb, var(--accent-secondary) 12%, transparent)"
           />
           <text
             x="200"
             y="105"
             textAnchor="middle"
-            fill="#4ade80"
+            fill="var(--accent-secondary)"
             fontSize="14"
           >
             ⚡
@@ -124,9 +124,9 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             cx="200"
             cy="200"
             r="50"
-            stroke="#3b9eff"
+            stroke="var(--accent)"
             strokeWidth="1.5"
-            fill="rgba(59,158,255,0.05)"
+            fill="color-mix(in srgb, var(--accent) 8%, transparent)"
           />
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <line
@@ -135,17 +135,17 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
               y1="200"
               x2={200 + 45 * Math.cos((i * Math.PI) / 3)}
               y2={200 + 45 * Math.sin((i * Math.PI) / 3)}
-              stroke="#3b9eff"
+              stroke="var(--accent)"
               strokeWidth="1"
             />
           ))}
-          <circle cx="200" cy="200" r="12" fill="#3b9eff" opacity="0.5" />
+          <circle cx="200" cy="200" r="12" fill="var(--accent)" opacity="0.5" />
           </g>
           <text
             x="200"
             y="270"
             textAnchor="middle"
-            fill="rgba(255,255,255,0.4)"
+            fill="var(--foreground-secondary)"
             fontSize="10"
             letterSpacing="2"
           >
@@ -218,7 +218,7 @@ export function Technology() {
         <SectionHeading
           label="Technologie"
           title="Technik der Zukunft"
-          description="Bayerische Präzision trifft elektrische Innovation."
+          description="Alpine Präzision trifft elektrische Innovation."
           className="mb-20"
         />
 

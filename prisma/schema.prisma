@@ -1,0 +1,460 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  CUSTOMER
+  EMPLOYEE
+  ADMIN
+}
+
+enum CustomerType {
+  PRIVATE
+  BUSINESS
+  MUNICIPALITY
+  HOTEL
+  FARM
+  CONSTRUCTION
+}
+
+enum ProductType {
+  VEHICLE
+  ACCESSORY
+  PART
+  SERVICE
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum Availability {
+  IN_STOCK
+  PRE_ORDER
+  SOLD_OUT
+  LOW_STOCK
+}
+
+enum OrderStatus {
+  CREATED
+  PAYMENT_PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  INVOICE_SENT
+}
+
+enum CustomRequestStatus {
+  NEW
+  REVIEWING
+  CONTACTED
+  OFFER_CREATED
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum PipelineStage {
+  NEW_REQUEST
+  CUSTOMER_CONTACTED
+  NEEDS_ANALYSIS
+  CONFIGURATION_CREATED
+  OFFER_SENT
+  ORDER_CONFIRMED
+  PRODUCTION_DELIVERY
+  COMPLETED
+}
+
+enum OfferStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum ServiceStatus {
+  CREATED
+  REVIEWING
+  APPOINTMENT
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum NotificationType {
+  REQUEST_RECEIVED
+  OFFER_CREATED
+  ORDER_UPDATE
+  SERVICE_UPDATE
+  NEW_INQUIRY
+  NEW_ORDER
+  NEW_SERVICE_REQUEST
+}
+
+// ─── Auth & Users ────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String?
+  lastName     String?
+  phone        String?
+  role         Role     @default(CUSTOMER)
+  customer     Customer?
+  orders       Order[]
+  vehicles     UserVehicle[]
+  cart         Cart?
+  notifications Notification[]
+  assignedOpportunities SalesOpportunity[] @relation("AssignedEmployee")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── CRM: Customers ─────────────────────────────────────────────────────────
+
+model Customer {
+  id           String       @id @default(cuid())
+  userId       String?      @unique
+  user         User?        @relation(fields: [userId], references: [id])
+  name         String
+  email        String       @unique
+  phone        String?
+  company      String?
+  customerType CustomerType @default(PRIVATE)
+  orders       Order[]
+  customRequests    CustomRequest[]
+  opportunities     SalesOpportunity[]
+  configurations    SavedConfiguration[]
+  offers            Offer[]
+  serviceRequests   ServiceRequest[]
+  notifications     Notification[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+// ─── Catalog ─────────────────────────────────────────────────────────────────
+
+model Category {
+  id          String     @id
+  slug        String     @unique
+  name        String
+  description String?
+  parentId    String?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+  sortOrder   Int        @default(0)
+  image       String?
+}
+
+model Product {
+  id               String        @id
+  slug             String        @unique
+  sku              String        @unique
+  name             String
+  tagline          String
+  description      String
+  price            Float
+  compareAtPrice   Float?
+  brand            String
+  manufacturer     String?
+  categoryId       String
+  category         Category      @relation(fields: [categoryId], references: [id])
+  productType      ProductType   @default(VEHICLE)
+  status           ProductStatus @default(ACTIVE)
+  available        Boolean       @default(true)
+  badge            String?
+  availability     Availability  @default(IN_STOCK)
+  inventory        Int           @default(1)
+  warranty         String?
+  images           String
+  gallery          String?
+  specs            String
+  tags             String        @default("[]")
+  compatibility    String?
+  story            String?
+  configurator     String?
+  relatedIds       String        @default("[]")
+  installationInfo String?
+  featured         Boolean       @default(false)
+  configOptions    ProductConfigOption[]
+  orderItems       OrderItem[]
+  cartItems        CartItem[]
+  customRequests   CustomRequest[]
+  savedConfigurations SavedConfiguration[]
+  spareParts       SparePart[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+model ProductConfigOption {
+  id              String  @id @default(cuid())
+  productId       String
+  product         Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  optionName      String
+  optionType      String  @default("select")
+  availableValues String
+  sortOrder       Int     @default(0)
+}
+
+// ─── Customization & Consultation ────────────────────────────────────────────
+
+model CustomRequest {
+  id          String              @id @default(cuid())
+  customerId  String?
+  customer    Customer?           @relation(fields: [customerId], references: [id])
+  email       String
+  name        String?
+  phone       String?
+  productId   String?
+  product     Product?            @relation(fields: [productId], references: [id])
+  productName String?
+  message     String
+  images      String              @default("[]")
+  status      CustomRequestStatus @default(NEW)
+  opportunity SalesOpportunity?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model SavedConfiguration {
+  id              String   @id @default(cuid())
+  customerId      String?
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id])
+  selections      String
+  accessories     String   @default("[]")
+  specialRequest  String?
+  estimatedPrice  Float
+  summary         String
+  offers          Offer[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── Sales Pipeline ──────────────────────────────────────────────────────────
+
+model SalesOpportunity {
+  id              String        @id @default(cuid())
+  customerId      String
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  customRequestId String?       @unique
+  customRequest   CustomRequest? @relation(fields: [customRequestId], references: [id])
+  assignedToId    String?
+  assignedTo      User?         @relation("AssignedEmployee", fields: [assignedToId], references: [id])
+  title           String
+  stage           PipelineStage @default(NEW_REQUEST)
+  notes           String?
+  estimatedValue  Float?
+  offers          Offer[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Offer {
+  id              String      @id @default(cuid())
+  offerNumber     String      @unique
+  customerId      String
+  customer        Customer    @relation(fields: [customerId], references: [id])
+  opportunityId   String?
+  opportunity     SalesOpportunity? @relation(fields: [opportunityId], references: [id])
+  configurationId String?
+  configuration   SavedConfiguration? @relation(fields: [configurationId], references: [id])
+  items           String
+  subtotal        Float
+  total           Float
+  notes           String?
+  status          OfferStatus @default(DRAFT)
+  validUntil      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+// ─── Cart ────────────────────────────────────────────────────────────────────
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?    @unique
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId String?    @unique
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id            String  @id @default(cuid())
+  cartId        String
+  cart          Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product @relation(fields: [productId], references: [id])
+  quantity      Int     @default(1)
+  configuration String?
+  requestOffer  Boolean @default(false)
+  createdAt     DateTime @default(now())
+}
+
+// ─── Orders ──────────────────────────────────────────────────────────────────
+
+model Order {
+  id                    String        @id @default(cuid())
+  orderNumber           String        @unique
+  userId                String?
+  user                  User?         @relation(fields: [userId], references: [id])
+  customerId            String?
+  customer              Customer?     @relation(fields: [customerId], references: [id])
+  email                 String
+  firstName             String
+  lastName              String
+  phone                 String?
+  status                OrderStatus   @default(CREATED)
+  items                 OrderItem[]
+  subtotal              Float
+  shipping              Float         @default(0)
+  tax                   Float         @default(0)
+  total                 Float
+  shippingAddress       String
+  billingAddress        String?
+  paymentMethod         String
+  paymentStatus         PaymentStatus @default(PENDING)
+  stripePaymentIntentId String?
+  guestCheckout         Boolean       @default(true)
+  notes                 String?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+}
+
+model OrderItem {
+  id            String  @id @default(cuid())
+  orderId       String
+  order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product @relation(fields: [productId], references: [id])
+  name          String
+  sku           String
+  price         Float
+  quantity      Int
+  configuration String?
+}
+
+// ─── Customer Vehicles (Digital Garage) ──────────────────────────────────────
+
+model UserVehicle {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId      String
+  productName    String
+  vin            String?
+  configSnapshot String?
+  purchaseDate   DateTime?
+  warrantyUntil  DateTime?
+  serviceRequests ServiceRequest[]
+  createdAt      DateTime  @default(now())
+}
+
+/// PIN-basierter Zugang zur Digital Garage (Pin beim Kauf)
+model GarageAccess {
+  id              String    @id @default(cuid())
+  pinHash         String
+  productId       String
+  productSlug     String
+  productName     String
+  customerName    String?
+  vin             String?
+  purchaseDate    DateTime?
+  warrantyUntil   DateTime?
+  batteryHealth   Int       @default(94)
+  nextServiceDate DateTime?
+  serviceLog      String    @default("[]")
+  documents       String    @default("[]")
+  active          Boolean   @default(true)
+  failedAttempts  Int       @default(0)
+  lockedUntil     DateTime?
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ─── Spare Parts ─────────────────────────────────────────────────────────────
+
+model SparePart {
+  id             String  @id @default(cuid())
+  partNumber     String  @unique
+  name           String
+  description    String?
+  compatibility  String
+  price          Float
+  images         String  @default("[]")
+  instructions   String?
+  productId      String?
+  product        Product? @relation(fields: [productId], references: [id])
+  availability   Availability @default(IN_STOCK)
+  inventory      Int     @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// ─── Service ─────────────────────────────────────────────────────────────────
+
+model ServiceRequest {
+  id                 String        @id @default(cuid())
+  customerId         String
+  customer           Customer      @relation(fields: [customerId], references: [id])
+  vehicleId          String?
+  vehicle            UserVehicle?  @relation(fields: [vehicleId], references: [id])
+  productName        String?
+  problemDescription String
+  images             String        @default("[]")
+  status             ServiceStatus @default(CREATED)
+  appointmentDate    DateTime?
+  notes              String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+// ─── Notifications ───────────────────────────────────────────────────────────
+
+model Notification {
+  id         String           @id @default(cuid())
+  userId     String?
+  user       User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customerId String?
+  customer   Customer?        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type       NotificationType
+  title      String
+  message    String
+  read       Boolean          @default(false)
+  metadata   String?
+  createdAt  DateTime         @default(now())
+}
+
+// Legacy — migrated to CustomRequest
+model ConsultationRequest {
+  id          String   @id @default(cuid())
+  email       String
+  message     String
+  productName String?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+}

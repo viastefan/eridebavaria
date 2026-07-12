@@ -71,7 +71,7 @@ export function Newsletter() {
             />
             <button
               type="submit"
-              className="flex items-center justify-center gap-2 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition-all hover:shadow-[0_0_30px_rgba(59,158,255,0.25)] sm:rounded-l-none"
+              className="flex items-center justify-center gap-2 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition-all hover:shadow-[0_0_30px_var(--button-glow)] sm:rounded-l-none"
               data-cursor="pointer"
             >
               Abonnieren

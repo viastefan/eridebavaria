@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ArrowRight, TrendingUp } from "lucide-react";
-import { useStore, getSearchResults } from "@/lib/store";
+import { useStore, fetchSearchResults } from "@/lib/store";
 import { trendingSearches } from "@/lib/products";
 import { labels } from "@/lib/labels";
 import type { SearchResult } from "@/lib/types";
@@ -14,6 +14,7 @@ export function SearchOverlay() {
   const { searchOpen, setSearchOpen, recentSearches, addRecentSearch } = useStore();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,8 +32,21 @@ export function SearchOverlay() {
   }, [searchOpen]);
 
   useEffect(() => {
-    setResults(getSearchResults(query));
-    setActiveIndex(0);
+    if (!query.trim()) {
+      setResults([]);
+      setActiveIndex(0);
+      return;
+    }
+
+    setLoading(true);
+    const timer = setTimeout(async () => {
+      const items = await fetchSearchResults(query);
+      setResults(items);
+      setActiveIndex(0);
+      setLoading(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
   }, [query]);
 
   useEffect(() => {
@@ -75,7 +89,7 @@ export function SearchOverlay() {
     <AnimatePresence>
       {searchOpen && (
         <motion.div
-          className="fixed inset-0 z-[60] flex items-start justify-center bg-background/90 pt-[15vh] backdrop-blur-2xl"
+          className="search-overlay fixed inset-0 z-[60] flex items-start justify-center pt-[15vh]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -96,9 +110,9 @@ export function SearchOverlay() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={labels.searchPlaceholder}
-                className="w-full rounded-2xl border border-border bg-card py-5 pr-6 pl-14 text-lg outline-none transition-colors focus:border-accent/50"
+                className="search-overlay__input"
               />
-              <kbd className="absolute top-1/2 right-5 hidden -translate-y-1/2 rounded-lg border border-border px-2 py-1 text-xs text-foreground-secondary md:block">
+              <kbd className="search-overlay__kbd absolute top-1/2 right-5 hidden -translate-y-1/2 md:block">
                 ESC
               </kbd>
             </div>
@@ -115,9 +129,9 @@ export function SearchOverlay() {
                         {recentSearches.map((s) => (
                           <button
                             key={s}
+                            type="button"
                             onClick={() => setQuery(s)}
-                            className="rounded-full border border-border px-4 py-2 text-sm transition-colors hover:bg-card"
-                            data-cursor="pointer"
+                            className="search-overlay__chip"
                           >
                             {s}
                           </button>
@@ -133,9 +147,9 @@ export function SearchOverlay() {
                       {trendingSearches.map((s) => (
                         <button
                           key={s}
+                          type="button"
                           onClick={() => setQuery(s)}
-                          className="rounded-full border border-border px-4 py-2 text-sm transition-colors hover:bg-card"
-                          data-cursor="pointer"
+                          className="search-overlay__chip"
                         >
                           {s}
                         </button>
@@ -145,27 +159,32 @@ export function SearchOverlay() {
                 </>
               )}
 
-              {displayItems.length > 0 && (
+              {loading && query && (
+                <p className="py-4 text-center text-sm text-foreground-secondary">Suche …</p>
+              )}
+
+              {!loading && displayItems.length > 0 && (
                 <div className="space-y-1">
                   {displayItems.map((result, i) => (
                     <Link
                       key={result.id}
                       href={result.href}
                       onClick={() => handleSelect(result)}
-                      className={`flex items-center gap-4 rounded-xl p-3 transition-colors ${
-                        i === activeIndex ? "bg-card" : "hover:bg-card/50"
-                      }`}
-                      data-cursor="pointer"
+                      className={`search-overlay__result ${i === activeIndex ? "is-active" : ""}`}
                     >
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg">
-                        <Image
-                          src={result.image}
-                          alt={result.name}
-                          fill
-                          className="object-cover"
-                          sizes="48px"
-                        />
-                      </div>
+                      {result.image ? (
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-card">
+                          <Image
+                            src={result.image}
+                            alt={result.name}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        </div>
+                      ) : (
+                        <div className="h-12 w-12 shrink-0 rounded-lg bg-card" />
+                      )}
                       <div className="flex-1">
                         <span className="font-medium">{result.name}</span>
                         <span className="mt-0.5 block text-sm text-foreground-secondary">
@@ -178,7 +197,7 @@ export function SearchOverlay() {
                 </div>
               )}
 
-              {query && displayItems.length === 0 && (
+              {query && !loading && displayItems.length === 0 && (
                 <p className="py-8 text-center text-foreground-secondary">
                   {labels.noResults} &ldquo;{query}&rdquo;
                 </p>

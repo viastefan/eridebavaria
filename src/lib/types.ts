@@ -78,11 +78,12 @@ export interface CartItem {
   image: string;
   quantity: number;
   configuration?: Record<string, string>;
+  requestOffer?: boolean;
 }
 
 export interface SearchResult {
   id: string;
-  type: "product" | "accessory" | "category";
+  type: "product" | "accessory" | "category" | "part";
   name: string;
   subtitle: string;
   image: string;

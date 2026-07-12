@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Product } from "@/lib/types";
+import { specLabels } from "@/lib/labels";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,16 +13,16 @@ interface SpecGridProps {
 }
 
 const specItems = [
-  { key: "battery", label: "Battery" },
-  { key: "power", label: "Power" },
-  { key: "charging", label: "Charging" },
-  { key: "range", label: "Range" },
-  { key: "topSpeed", label: "Top Speed" },
-  { key: "payload", label: "Payload" },
-  { key: "seats", label: "Seats" },
-  { key: "dimensions", label: "Dimensions" },
-  { key: "weight", label: "Weight" },
-  { key: "motor", label: "Motor" },
+  { key: "battery", label: specLabels.battery },
+  { key: "power", label: specLabels.power },
+  { key: "charging", label: specLabels.charging },
+  { key: "range", label: specLabels.range },
+  { key: "topSpeed", label: specLabels.topSpeed },
+  { key: "payload", label: specLabels.payload },
+  { key: "seats", label: specLabels.seats },
+  { key: "dimensions", label: specLabels.dimensions },
+  { key: "weight", label: specLabels.weight },
+  { key: "motor", label: specLabels.motor },
 ] as const;
 
 export function SpecGrid({ product }: SpecGridProps) {

@@ -69,8 +69,8 @@ function VehicleBody() {
       <mesh position={[0, 0.72, 0.71]}>
         <boxGeometry args={[2.8, 0.02, 0.02]} />
         <meshStandardMaterial
-          color="#3b9eff"
-          emissive="#3b9eff"
+          color="#5a8aad"
+          emissive="#5a8aad"
           emissiveIntensity={2}
           metalness={1}
           roughness={0}
@@ -92,8 +92,8 @@ function VehicleBody() {
           <mesh rotation={[0, 0, Math.PI / 2]}>
             <cylinderGeometry args={[0.2, 0.2, 0.26, 32]} />
             <meshStandardMaterial
-              color="#3b9eff"
-              emissive="#3b9eff"
+              color="#5a8aad"
+              emissive="#5a8aad"
               emissiveIntensity={0.5}
               metalness={1}
               roughness={0.1}
@@ -149,7 +149,7 @@ function Particles() {
       size={1.5}
       speed={0.2}
       opacity={0.3}
-      color="#3b9eff"
+      color="#5a8aad"
     />
   );
 }
@@ -171,9 +171,9 @@ function Scene() {
         angle={0.4}
         penumbra={1}
         intensity={1}
-        color="#3b9eff"
+        color="#5a8aad"
       />
-      <pointLight position={[0, 2, 3]} intensity={0.5} color="#4ade80" />
+      <pointLight position={[0, 2, 3]} intensity={0.5} color="#5aab82" />
 
       <Float speed={1} rotationIntensity={0.1} floatIntensity={0.3}>
         <VehicleBody />

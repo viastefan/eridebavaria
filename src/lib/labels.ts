@@ -30,8 +30,8 @@ export const labels = {
   configuredPrice: "Konfigurierter Preis",
   story: "Die Geschichte",
   accessories: "Zubehör",
-  completeSetup: "Setup vervollständigen",
-  vehicleSupport: "Fahrzeug-Support",
+  completeSetup: "Ausstattung vervollständigen",
+  vehicleSupport: "Fahrzeughilfe",
   supportDesc: "Handbücher, Videos, Garantie & Ersatzteile",
   warranty2y: "2 Jahre Garantie inklusive",
   warranty2yFull: "2 Jahre Vollgarantie",
@@ -43,7 +43,8 @@ export const labels = {
   vehicle: "Fahrzeug",
   noMatchFilters: "Keine Fahrzeuge entsprechen deinen Filtern.",
   welcomeFuture: "Willkommen in der Zukunft",
-  orderConfirmed: "Deine Bestellung ist bestätigt. Du erhältst Handbuch, digitale Garantie und Tutorial-Videos per E-Mail.",
+  orderConfirmed:
+    "Deine Bestellung ist bestätigt. Du erhältst Handbuch, digitale Garantie und Tutorial-Videos per E-Mail.",
   viewAccount: "Im Konto ansehen",
   contactInfo: "Kontaktdaten",
   shippingAddress: "Lieferadresse",
@@ -68,10 +69,12 @@ export const labels = {
   postalCode: "PLZ",
   country: "Land",
   cardNumber: "Kartennummer",
+  securityCode: "Prüfnummer",
   reviewHint: "Bitte prüfe deine Bestellung vor dem Kaufabschluss.",
   needHelp: "Brauchst du Hilfe?",
-  supportHours: "Unser europäisches Support-Team ist Mo–Fr, 9:00–18:00 Uhr erreichbar.",
-  contactSupport: "Support kontaktieren",
+  supportHours:
+    "Unser bayerisches Service-Team ist Mo–Fr, 9:00–18:00 Uhr für dich erreichbar.",
+  contactSupport: "Hilfe kontaktieren",
   compareAll: "Alle Fahrzeuge vergleichen",
   privacy: "Datenschutz",
   terms: "AGB",
@@ -81,13 +84,29 @@ export const labels = {
   designedToMove: "Gemacht, um zu bewegen",
   everyDetail: "Jedes Detail",
   menu: "Menü",
+  lightMode: "Hellmodus aktivieren",
+  darkMode: "Dunkelmodus aktivieren",
+  help: "Hilfe",
+} as const;
+
+export const specLabels = {
+  battery: "Batterie",
+  power: "Leistung",
+  charging: "Ladezeit",
+  range: "Reichweite",
+  topSpeed: "Höchstgeschw.",
+  payload: "Zuladung",
+  seats: "Sitze",
+  dimensions: "Abmessungen",
+  weight: "Gewicht",
+  motor: "Motor",
 } as const;
 
 export const badgeLabels: Record<ProductBadge, string> = {
   new: "Neu",
   popular: "Beliebt",
   limited: "Limitiert",
-  premium: "Premium",
+  premium: "Exklusiv",
 };
 
 export const availabilityLabels: Record<Availability, string> = {
@@ -115,13 +134,13 @@ export const accountTabs = [
   { id: "wishlist", label: "Merkliste" },
   { id: "parts", label: "Ersatzteile" },
   { id: "vehicles", label: "Meine Fahrzeuge" },
-  { id: "support", label: "Support" },
+  { id: "support", label: "Hilfe" },
 ] as const;
 
 export const supportSections = [
   { title: "Bedienungsanleitung", description: "Vollständiger Leitfaden" },
   { title: "Tutorial-Videos", description: "Schritt-für-Schritt Anleitungen" },
-  { title: "FAQ", description: "Häufige Fragen beantwortet" },
+  { title: "Häufige Fragen", description: "Antworten auf deine Fragen" },
   { title: "Ersatzteile", description: "Original-Komponenten" },
   { title: "Downloads", description: "Software & Dokumente" },
   { title: "Garantie", description: "Abdeckung & Reklamationen" },
@@ -130,11 +149,11 @@ export const supportSections = [
 
 export const megaMenuSections = {
   categories: "Kategorien",
-  featured: "Highlights",
+  featured: "Im Fokus",
   discover: "Entdecken",
   vehicleFinder: "Fahrzeug-Finder",
   compareVehicles: "Fahrzeuge vergleichen",
-  support: "Support",
+  support: "Hilfe",
 } as const;
 
 export const configLabels = {

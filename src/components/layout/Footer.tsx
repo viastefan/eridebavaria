@@ -1,43 +1,45 @@
 import Link from "next/link";
+import { platform } from "@/lib/platform";
+import { regional } from "@/lib/regional";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { Container } from "@/components/ui/Container";
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
-  Katalog: [
-    { label: "Elektro Kleinwagen", href: "/shop?category=kleinwagen" },
-    { label: "Transporter", href: "/shop?category=transporter" },
-    { label: "Motorräder", href: "/shop?category=motorraeder" },
-    { label: "Quads", href: "/shop?category=quads" },
-    { label: "Mopedauto", href: "/shop?category=mopedauto" },
+  Fahrzeuge: [
+    { label: "Alle Modelle", href: "/shop" },
+    { label: "Angebote", href: "/shop" },
     { label: "Zubehör", href: "/shop?category=zubehoer" },
   ],
-  Unternehmen: [
-    { label: "Über uns", href: "/#stories" },
-    { label: "Technologie", href: "/#technology" },
-    { label: "Vergleich", href: "/compare" },
-    { label: "Kontakt", href: "/account" },
-  ],
   Service: [
-    { label: "FAQ", href: "/support/efo-em8-elektro-chopper" },
-    { label: "Gewährleistung", href: "/account" },
-    { label: "Ersatzteile", href: "/account" },
-    { label: "Konto", href: "/account" },
+    { label: "Ersatzteile", href: "/parts" },
+    { label: "Werkstatt", href: "/garage" },
+    { label: "Garantie", href: "/garage" },
+    { label: "Beratung", href: "/shop" },
+  ],
+  Unternehmen: [
+    { label: "Journal", href: "/journal" },
+    { label: "Gewerbe", href: "/fleet" },
+    { label: "Meine Garage", href: "/garage" },
   ],
 };
 
 export function Footer() {
   return (
     <footer className="border-t border-border bg-background">
-      <div className="section-padding py-20">
-        <div className="grid gap-16 md:grid-cols-2 lg:grid-cols-5">
+      <Container className="py-14 md:py-20">
+        <div className="grid gap-10 md:grid-cols-2 md:gap-16 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="mb-6 flex items-center gap-2">
-              <span className="text-xl font-medium">eRide</span>
-              <span className="text-xl font-light text-foreground-secondary">
-                Bavaria
-              </span>
+              <span className="text-sm font-medium tracking-tight">eRide</span>
+              <span className="text-sm font-normal text-foreground-secondary">Bavaria</span>
             </div>
             <p className="max-w-sm text-sm leading-relaxed text-foreground-secondary">
-              Premium E-Mobilität für Europa. Kuratiert, geprüft und persönlich
-              beraten — weit entfernt vom Standard-Webshop.
+              {platform.brand.manifesto}
+            </p>
+            <p className="mt-6 text-sm text-foreground-secondary">
+              {regional.brand.postal} {regional.brand.city}
+              <br />
+              {regional.brand.region}
             </p>
           </div>
 
@@ -51,8 +53,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-foreground-secondary transition-colors hover:text-foreground"
-                      data-cursor="pointer"
+                      className="inline-flex min-h-11 items-center text-sm text-foreground-secondary transition-colors duration-500 hover:text-foreground"
                     >
                       {link.label}
                     </Link>
@@ -63,32 +64,24 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:mt-20 md:flex-row">
           <p className="text-xs text-foreground-secondary">
-            © 2026 eRide Bavaria. Alle Rechte vorbehalten.
+            © 2026 eRide Bavaria · {regional.brand.city}
           </p>
-          <div className="flex gap-8">
-            <Link
-              href="#"
-              className="text-xs text-foreground-secondary hover:text-foreground"
-            >
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            <ThemeToggle variant="footer" />
+            <Link href="#" className="text-xs text-foreground-secondary hover:text-foreground">
               Datenschutz
             </Link>
-            <Link
-              href="#"
-              className="text-xs text-foreground-secondary hover:text-foreground"
-            >
+            <Link href="#" className="text-xs text-foreground-secondary hover:text-foreground">
               AGB
             </Link>
-            <Link
-              href="#"
-              className="text-xs text-foreground-secondary hover:text-foreground"
-            >
+            <Link href="#" className="text-xs text-foreground-secondary hover:text-foreground">
               Impressum
             </Link>
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

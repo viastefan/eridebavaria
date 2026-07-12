@@ -1,13 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Minus, Plus, Shield } from "lucide-react";
+import { X, Minus, Plus, Shield, FileText } from "lucide-react";
 import { useStore } from "@/lib/store";
-import { formatPrice, accessoryCatalog } from "@/lib/products";
+import { formatPrice } from "@/lib/products";
+import type { Accessory } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { labels } from "@/lib/labels";
+import { commerceCopy } from "@/lib/commerce-copy";
 
 export function CartDrawer() {
   const {
@@ -16,11 +19,21 @@ export function CartDrawer() {
     setCartOpen,
     removeFromCart,
     updateQuantity,
+    toggleRequestOffer,
     cartTotal,
     addToCart,
   } = useStore();
 
-  const recommendations = accessoryCatalog.slice(0, 2);
+  const [recommendations, setRecommendations] = useState<Accessory[]>([]);
+
+  useEffect(() => {
+    fetch("/api/products?type=accessories")
+      .then((r) => r.json())
+      .then((d) => setRecommendations((d.accessories ?? []).slice(0, 2)))
+      .catch(() => {});
+  }, []);
+
+  const hasOfferItems = cart.some((i) => i.requestOffer);
 
   return (
     <AnimatePresence>
@@ -87,6 +100,12 @@ export function CartDrawer() {
                         <p className="mt-1 text-sm text-foreground-secondary">
                           {formatPrice(item.price)}
                         </p>
+                        {item.requestOffer && (
+                          <p className="mt-1 flex items-center gap-1 text-xs text-accent">
+                            <FileText className="h-3 w-3" />
+                            Individuelles Angebot
+                          </p>
+                        )}
                         <div className="mt-3 flex items-center gap-3">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -111,6 +130,15 @@ export function CartDrawer() {
                             {labels.remove}
                           </button>
                         </div>
+                        <button
+                          type="button"
+                          onClick={() => toggleRequestOffer(item.id, !item.requestOffer)}
+                          className="mt-2 text-xs text-accent hover:underline"
+                        >
+                          {item.requestOffer
+                            ? "Direktbestellung"
+                            : "Individuelles Angebot anfragen"}
+                        </button>
                       </div>
                     </motion.div>
                   ))}
@@ -124,7 +152,13 @@ export function CartDrawer() {
                         {recommendations.map((acc) => (
                           <div key={acc.id} className="flex items-center gap-3">
                             <div className="relative h-12 w-12 overflow-hidden rounded-lg">
-                              <Image src={acc.image} alt={acc.name} fill className="object-cover" sizes="48px" />
+                              <Image
+                                src={acc.image}
+                                alt={acc.name}
+                                fill
+                                className="object-cover"
+                                sizes="48px"
+                              />
                             </div>
                             <div className="flex-1">
                               <span className="text-sm">{acc.name}</span>
@@ -157,17 +191,31 @@ export function CartDrawer() {
 
             {cart.length > 0 && (
               <div className="border-t border-border p-6">
+                <p className="mb-4 text-sm leading-relaxed text-foreground-secondary">
+                  {commerceCopy.cart.b2bNote}
+                </p>
                 <div className="mb-4 flex items-center gap-2 text-sm text-foreground-secondary">
                   <Shield className="h-4 w-4" />
                   <span>{labels.warranty2y}</span>
                 </div>
+                <p className="mb-4 text-xs text-foreground-secondary">
+                  {hasOfferItems
+                    ? "Positionen mit Angebotsanfrage werden von unserem Team geprüft."
+                    : commerceCopy.cart.quoteHint}
+                </p>
                 <div className="mb-6 flex justify-between">
                   <span className="text-foreground-secondary">{labels.subtotal}</span>
                   <span className="text-xl font-medium">{formatPrice(cartTotal)}</span>
                 </div>
-                <Link href="/checkout" onClick={() => setCartOpen(false)}>
-                  <Button className="w-full">{labels.checkout}</Button>
-                </Link>
+                {hasOfferItems ? (
+                  <Link href="/#beratung" onClick={() => setCartOpen(false)}>
+                    <Button className="w-full">Beratung für Angebot starten</Button>
+                  </Link>
+                ) : (
+                  <Link href="/checkout" onClick={() => setCartOpen(false)}>
+                    <Button className="w-full">{labels.checkout}</Button>
+                  </Link>
+                )}
               </div>
             )}
           </motion.aside>
