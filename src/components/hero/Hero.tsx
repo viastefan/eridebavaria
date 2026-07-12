@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
+import { labels } from "@/lib/labels";
 
 const VehicleScene = dynamic(
   () => import("./VehicleScene").then((m) => m.VehicleScene),
@@ -118,7 +119,7 @@ export function Hero() {
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
             <span className="text-[10px] uppercase tracking-[0.2em] text-foreground-secondary">
-              Scroll
+              {labels.scroll}
             </span>
             <div className="h-8 w-px bg-gradient-to-b from-foreground-secondary to-transparent" />
           </motion.div>

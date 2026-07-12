@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = getProductBySlug(slug);
-  if (!product) return { title: "Not Found" };
+  if (!product) return { title: "Nicht gefunden" };
 
   return {
     title: `${product.name} — eRide Bavaria`,

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useStore } from "@/lib/store";
 import { categories } from "@/lib/data";
 import { products, formatPrice } from "@/lib/products";
+import { labels, megaMenuSections } from "@/lib/labels";
 
 interface MegaLink {
   label: string;
@@ -16,7 +17,7 @@ interface MegaLink {
 
 const megaSections: { title: string; links: MegaLink[] }[] = [
   {
-    title: "Categories",
+    title: megaMenuSections.categories,
     links: categories.map((c) => ({
       label: c.title,
       href: `/shop?category=${c.id}`,
@@ -24,7 +25,7 @@ const megaSections: { title: string; links: MegaLink[] }[] = [
     })),
   },
   {
-    title: "Featured",
+    title: megaMenuSections.featured,
     links: products.slice(0, 3).map((p) => ({
       label: p.name,
       href: `/product/${p.slug}`,
@@ -33,12 +34,12 @@ const megaSections: { title: string; links: MegaLink[] }[] = [
     })),
   },
   {
-    title: "Discover",
+    title: megaMenuSections.discover,
     links: [
-      { label: "Vehicle Finder", href: "/shop", image: products[0].images[0] },
-      { label: "Compare Vehicles", href: "/compare", image: products[1].images[0] },
-      { label: "Accessories", href: "/shop?category=accessories", image: categories[5].image },
-      { label: "Support", href: "/support/efo-em8-elektro-chopper", image: categories[3].image },
+      { label: megaMenuSections.vehicleFinder, href: "/shop", image: products[0].images[0] },
+      { label: megaMenuSections.compareVehicles, href: "/compare", image: products[1].images[0] },
+      { label: labels.accessories, href: "/shop?category=zubehoer", image: categories[7].image },
+      { label: megaMenuSections.support, href: "/support/efo-em8-elektro-chopper", image: categories[3].image },
     ],
   },
 ];

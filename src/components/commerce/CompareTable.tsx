@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { products, compareSpecKeys, formatPrice } from "@/lib/products";
 import { useStore } from "@/lib/store";
+import { labels } from "@/lib/labels";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,9 +35,9 @@ export function CompareTable() {
   if (compareProducts.length === 0) {
     return (
       <div className="py-32 text-center">
-        <h2 className="heading-xl text-gradient">Compare Vehicles</h2>
+        <h2 className="heading-xl text-gradient">Fahrzeuge vergleichen</h2>
         <p className="mx-auto mt-4 max-w-md text-foreground-secondary">
-          Select up to 4 vehicles to compare side by side.
+          Wähle bis zu 4 Fahrzeuge für den direkten Vergleich.
         </p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.slice(0, 6).map((p) => (
@@ -60,13 +61,13 @@ export function CompareTable() {
   return (
     <div ref={ref}>
       <div className="mb-8 flex items-center justify-between">
-        <h2 className="heading-xl">Compare</h2>
+        <h2 className="heading-xl">{labels.compare}</h2>
         <button
           onClick={clearCompare}
           className="text-sm text-accent hover:underline"
           data-cursor="pointer"
         >
-          Clear all
+          {labels.clearAll}
         </button>
       </div>
 
@@ -75,13 +76,13 @@ export function CompareTable() {
           <thead>
             <tr className="sticky top-28 z-10 bg-background">
               <th className="p-4 text-left text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-                Specification
+                {labels.specification}
               </th>
               {compareProducts.map((p) => (
                 <th key={p.id} className="compare-col p-4 text-left">
                   <Link href={`/product/${p.slug}`} className="group" data-cursor="pointer">
-                    <div className="relative mb-3 aspect-[16/10] w-40 overflow-hidden rounded-xl">
-                      <Image src={p.images[0]} alt={p.name} fill className="object-cover" sizes="160px" />
+                    <div className="relative mb-3 aspect-[16/10] w-40 overflow-hidden rounded-xl bg-card">
+                      <Image src={p.images[0]} alt={p.name} fill className="object-contain p-2" sizes="160px" />
                     </div>
                     <span className="font-medium group-hover:text-accent">{p.name}</span>
                     <span className="mt-1 block text-sm text-foreground-secondary">
@@ -93,7 +94,7 @@ export function CompareTable() {
                     className="mt-2 text-xs text-foreground-secondary hover:text-foreground"
                     data-cursor="pointer"
                   >
-                    Remove
+                    {labels.remove}
                   </button>
                 </th>
               ))}

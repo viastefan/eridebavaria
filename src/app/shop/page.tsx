@@ -4,6 +4,7 @@ import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { products } from "@/lib/products";
+import { labels } from "@/lib/labels";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import {
   ShopFilters,
@@ -51,12 +52,12 @@ function ShopContent() {
           <div>
             <div className="mb-8 flex items-center justify-between lg:hidden">
               <p className="text-sm text-foreground-secondary">
-                {filtered.length} vehicles
+                {filtered.length} {filtered.length === 1 ? "Fahrzeug" : "Fahrzeuge"}
               </p>
             </div>
             {filtered.length === 0 ? (
               <div className="py-24 text-center text-foreground-secondary">
-                No vehicles match your filters.
+                {labels.noMatchFilters}
               </div>
             ) : (
               <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">

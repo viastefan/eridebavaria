@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { labels } from "@/lib/labels";
 import type { Product } from "@/lib/types";
 
 interface ProductGalleryProps {
@@ -51,7 +52,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
             />
           </motion.div>
           <div className="absolute right-4 bottom-4 rounded-full bg-background/60 px-3 py-1.5 text-xs backdrop-blur-xl">
-            360° View
+            {labels.view360}
           </div>
         </div>
 

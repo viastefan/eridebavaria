@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
-  Shop: [
+  Katalog: [
     { label: "Elektro Kleinwagen", href: "/shop?category=kleinwagen" },
     { label: "Transporter", href: "/shop?category=transporter" },
     { label: "Motorräder", href: "/shop?category=motorraeder" },
@@ -65,26 +65,26 @@ export function Footer() {
 
         <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
           <p className="text-xs text-foreground-secondary">
-            © 2026 eRide Bavaria. All rights reserved.
+            © 2026 eRide Bavaria. Alle Rechte vorbehalten.
           </p>
           <div className="flex gap-8">
             <Link
               href="#"
               className="text-xs text-foreground-secondary hover:text-foreground"
             >
-              Privacy
+              Datenschutz
             </Link>
             <Link
               href="#"
               className="text-xs text-foreground-secondary hover:text-foreground"
             >
-              Terms
+              AGB
             </Link>
             <Link
               href="#"
               className="text-xs text-foreground-secondary hover:text-foreground"
             >
-              Imprint
+              Impressum
             </Link>
           </div>
         </div>

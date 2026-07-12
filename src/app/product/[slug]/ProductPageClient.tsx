@@ -13,6 +13,7 @@ import { Configurator } from "@/components/commerce/Configurator";
 import { SpecGrid } from "@/components/commerce/SpecGrid";
 import { ProductStory } from "@/components/commerce/ProductStory";
 import { Button } from "@/components/ui/Button";
+import { badgeLabels, availabilityLabels, labels } from "@/lib/labels";
 
 export function ProductPageClient({ product }: { product: Product }) {
   const { addToCart, toggleWishlist, toggleCompare, wishlist, compare } =
@@ -49,13 +50,13 @@ export function ProductPageClient({ product }: { product: Product }) {
         <ol className="flex items-center gap-2 text-xs text-foreground-secondary">
           <li>
             <Link href="/" className="hover:text-foreground">
-              Home
+              {labels.home}
             </Link>
           </li>
           <li>/</li>
           <li>
             <Link href="/shop" className="hover:text-foreground">
-              Collection
+              {labels.collection}
             </Link>
           </li>
           <li>/</li>
@@ -76,7 +77,7 @@ export function ProductPageClient({ product }: { product: Product }) {
             >
               {product.badge && (
                 <span className="mb-4 inline-block rounded-full bg-accent/20 px-3 py-1 text-xs uppercase tracking-wider text-accent">
-                  {product.badge}
+                  {badgeLabels[product.badge]}
                 </span>
               )}
               <h1 className="heading-xl">{product.name}</h1>
@@ -86,8 +87,8 @@ export function ProductPageClient({ product }: { product: Product }) {
               <p className="mt-6 text-3xl font-medium">
                 {formatPrice(configuredPrice)}
               </p>
-              <p className="mt-2 text-sm text-foreground-secondary capitalize">
-                {product.availability.replace("-", " ")}
+              <p className="mt-2 text-sm text-foreground-secondary">
+                {availabilityLabels[product.availability]}
               </p>
 
               <div className="mt-8">
@@ -96,7 +97,7 @@ export function ProductPageClient({ product }: { product: Product }) {
 
               <div className="mt-8 flex gap-3">
                 <Button onClick={handleAddToCart} className="flex-1">
-                  Add to Cart
+                  {labels.addToCart}
                 </Button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
@@ -123,11 +124,11 @@ export function ProductPageClient({ product }: { product: Product }) {
               <div className="mt-8 space-y-3 border-t border-border pt-8">
                 <div className="flex items-center gap-3 text-sm text-foreground-secondary">
                   <Shield className="h-4 w-4" />
-                  <span>2-year comprehensive warranty</span>
+                  <span>{labels.warranty2yFull}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-foreground-secondary">
                   <Truck className="h-4 w-4" />
-                  <span>Free European delivery</span>
+                  <span>{labels.freeShipping}</span>
                 </div>
               </div>
             </motion.div>
@@ -139,9 +140,9 @@ export function ProductPageClient({ product }: { product: Product }) {
       <section className="section-padding py-24 md:py-32">
         <div className="mb-16 text-center">
           <span className="text-xs uppercase tracking-[0.25em] text-accent">
-            The Story
+            {labels.story}
           </span>
-          <h2 className="heading-xl mt-4 text-gradient">Designed to Move You</h2>
+          <h2 className="heading-xl mt-4 text-gradient">{labels.designedToMove}</h2>
         </div>
         <ProductStory product={product} />
       </section>
@@ -150,9 +151,9 @@ export function ProductPageClient({ product }: { product: Product }) {
       <section className="section-padding py-24 md:py-32">
         <div className="mb-16">
           <span className="text-xs uppercase tracking-[0.25em] text-accent">
-            Specifications
+            {labels.specifications}
           </span>
-          <h2 className="heading-xl mt-4">Every Detail</h2>
+          <h2 className="heading-xl mt-4">{labels.everyDetail}</h2>
         </div>
         <SpecGrid product={product} />
       </section>
@@ -162,9 +163,9 @@ export function ProductPageClient({ product }: { product: Product }) {
         <section className="section-padding py-24 md:py-32">
           <div className="mb-12">
             <span className="text-xs uppercase tracking-[0.25em] text-accent">
-              Accessories
+              {labels.accessories}
             </span>
-            <h2 className="heading-lg mt-4">Complete Your Setup</h2>
+            <h2 className="heading-lg mt-4">{labels.completeSetup}</h2>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {relatedAccessories.map((acc) =>
@@ -198,9 +199,9 @@ export function ProductPageClient({ product }: { product: Product }) {
           data-cursor="pointer"
         >
           <div>
-            <h3 className="text-lg font-medium">Vehicle Support</h3>
+            <h3 className="text-lg font-medium">{labels.vehicleSupport}</h3>
             <p className="mt-1 text-sm text-foreground-secondary">
-              Manuals, videos, warranty & replacement parts
+              {labels.supportDesc}
             </p>
           </div>
           <span className="text-accent">→</span>

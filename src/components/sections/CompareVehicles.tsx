@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { products, formatPrice } from "@/lib/products";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GitCompare } from "lucide-react";
+import { labels } from "@/lib/labels";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,9 +37,9 @@ export function CompareVehicles() {
   return (
     <section ref={ref} className="section-padding py-32 md:py-48">
       <SectionHeading
-        label="Compare"
-        title="Find Your Match"
-        description="Three vehicles. One perfect fit."
+        label="Vergleich"
+        title="Finde dein Match"
+        description="Drei Fahrzeuge. Eine perfekte Wahl."
         className="mb-16"
       />
 
@@ -77,7 +78,7 @@ export function CompareVehicles() {
           data-cursor="pointer"
         >
           <GitCompare className="h-4 w-4" />
-          Compare all vehicles
+          {labels.compareAll}
         </Link>
       </div>
     </section>

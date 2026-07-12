@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { accessories } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { labels } from "@/lib/labels";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,9 +45,9 @@ export function Accessories() {
     >
       <div className="section-padding">
         <SectionHeading
-          label="Accessories"
-          title="Complete the Experience"
-          description="Designed to complement. Engineered to perform."
+          label={labels.accessories}
+          title="Das volle Erlebnis"
+          description="Perfekt abgestimmt. Für maximale Leistung."
           align="center"
           className="mb-20"
         />

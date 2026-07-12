@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { CompareTable } from "@/components/commerce/CompareTable";
 
 export const metadata: Metadata = {
-  title: "Compare Vehicles — eRide Bavaria",
-  description: "Compare up to 4 electric vehicles side by side.",
+  title: "Fahrzeuge vergleichen",
+  description: "Vergleiche bis zu 4 E-Fahrzeuge direkt nebeneinander.",
 };
 
 export default function ComparePage() {

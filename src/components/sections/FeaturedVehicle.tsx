@@ -55,7 +55,7 @@ export function FeaturedVehicle() {
       <div className="section-padding">
         <div className="mb-16 text-center">
           <span className="mb-4 block text-xs font-medium uppercase tracking-[0.25em] text-accent">
-            Highlight
+            Im Fokus
           </span>
           <h2 className="heading-display text-gradient">{product.name}</h2>
           <p className="mx-auto mt-6 max-w-lg text-foreground-secondary">

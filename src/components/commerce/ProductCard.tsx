@@ -8,6 +8,8 @@ import { formatPrice } from "@/lib/products";
 import type { Product } from "@/lib/types";
 import { useStore } from "@/lib/store";
 
+import { badgeLabels, availabilityLabels } from "@/lib/labels";
+
 const badgeStyles = {
   new: "bg-accent/20 text-accent",
   popular: "bg-accent-secondary/20 text-accent-secondary",
@@ -48,7 +50,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             <span
               className={`absolute top-4 left-4 rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-wider ${badgeStyles[product.badge]}`}
             >
-              {product.badge}
+              {badgeLabels[product.badge]}
             </span>
           )}
 

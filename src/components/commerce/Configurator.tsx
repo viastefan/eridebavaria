@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { Product, ConfigOption } from "@/lib/types";
 import { formatPrice } from "@/lib/products";
+import { configLabels, labels } from "@/lib/labels";
 
 interface ConfiguratorProps {
   product: Product;
@@ -97,32 +98,32 @@ export function Configurator({ product, onPriceChange }: ConfiguratorProps) {
       </motion.div>
 
       <OptionGroup
-        label="Color"
+        label={configLabels.color}
         options={product.configurator.colors}
         selected={color}
         onSelect={setColor}
         type="color"
       />
       <OptionGroup
-        label="Wheels"
+        label={configLabels.wheels}
         options={product.configurator.wheels}
         selected={wheels}
         onSelect={setWheels}
       />
       <OptionGroup
-        label="Battery"
+        label={configLabels.battery}
         options={product.configurator.battery}
         selected={battery}
         onSelect={setBattery}
       />
       <OptionGroup
-        label="Roof"
+        label={configLabels.roof}
         options={product.configurator.roof}
         selected={roof}
         onSelect={setRoof}
       />
       <OptionGroup
-        label="Cargo"
+        label={configLabels.cargo}
         options={product.configurator.cargoBox}
         selected={cargoBox}
         onSelect={setCargoBox}
@@ -130,7 +131,7 @@ export function Configurator({ product, onPriceChange }: ConfiguratorProps) {
 
       <div className="border-t border-border pt-6">
         <div className="flex justify-between">
-          <span className="text-foreground-secondary">Configured price</span>
+          <span className="text-foreground-secondary">{labels.configuredPrice}</span>
           <span className="text-2xl font-medium">{formatPrice(totalPrice)}</span>
         </div>
       </div>

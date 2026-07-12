@@ -35,14 +35,14 @@ export function Newsletter() {
     <section ref={ref} className="section-padding py-32 md:py-48">
       <div className="mx-auto max-w-2xl text-center">
         <span className="text-xs uppercase tracking-[0.25em] text-accent">
-          Stay Connected
+          Bleib informiert
         </span>
         <h2 className="heading-xl mt-4 text-gradient">
-          The Future, Delivered
+          Die Zukunft, geliefert
         </h2>
         <p className="mt-4 text-foreground-secondary">
-          Be the first to know about new vehicles, exclusive events, and
-          Bavarian engineering insights.
+          Erfahre als Erster von neuen Fahrzeugen, exklusiven Events und
+          Einblicken in die E-Mobilität.
         </p>
 
         {submitted ? (
@@ -51,7 +51,7 @@ export function Newsletter() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            Welcome to the future. Check your inbox.
+            Willkommen in der Zukunft. Prüfe dein Postfach.
           </motion.p>
         ) : (
           <form
@@ -65,7 +65,7 @@ export function Newsletter() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder="deine@email.com"
               required
               className="flex-1 rounded-full border border-border bg-card px-6 py-4 outline-none transition-colors focus:border-accent/50 sm:rounded-r-none"
             />
@@ -74,7 +74,7 @@ export function Newsletter() {
               className="flex items-center justify-center gap-2 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition-all hover:shadow-[0_0_30px_rgba(59,158,255,0.25)] sm:rounded-l-none"
               data-cursor="pointer"
             >
-              Subscribe
+              Abonnieren
               <ArrowRight className="h-4 w-4" />
             </button>
           </form>

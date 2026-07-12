@@ -7,6 +7,7 @@ import { X, Minus, Plus, Shield } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { formatPrice, accessoryCatalog } from "@/lib/products";
 import { Button } from "@/components/ui/Button";
+import { labels } from "@/lib/labels";
 
 export function CartDrawer() {
   const {
@@ -40,7 +41,7 @@ export function CartDrawer() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="flex items-center justify-between border-b border-border p-6">
-              <h2 className="text-lg font-medium">Your Cart</h2>
+              <h2 className="text-lg font-medium">{labels.cart}</h2>
               <button
                 onClick={() => setCartOpen(false)}
                 className="rounded-full p-2 transition-colors hover:bg-card"
@@ -53,13 +54,13 @@ export function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-6">
               {cart.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
-                  <p className="text-foreground-secondary">Your cart is empty</p>
+                  <p className="text-foreground-secondary">{labels.emptyCart}</p>
                   <Link
                     href="/shop"
                     className="mt-4 text-sm text-accent hover:underline"
                     onClick={() => setCartOpen(false)}
                   >
-                    Explore Collection
+                    {labels.exploreCollection}
                   </Link>
                 </div>
               ) : (
@@ -77,7 +78,7 @@ export function CartDrawer() {
                           src={item.image}
                           alt={item.name}
                           fill
-                          className="object-cover"
+                          className="object-contain p-2"
                           sizes="96px"
                         />
                       </div>
@@ -107,7 +108,7 @@ export function CartDrawer() {
                             className="ml-auto text-xs text-foreground-secondary hover:text-foreground"
                             data-cursor="pointer"
                           >
-                            Remove
+                            {labels.remove}
                           </button>
                         </div>
                       </div>
@@ -117,7 +118,7 @@ export function CartDrawer() {
                   {recommendations.length > 0 && (
                     <div className="mt-8 border-t border-border pt-8">
                       <span className="text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-                        Complete your setup
+                        {labels.completeSetup}
                       </span>
                       <div className="mt-4 space-y-3">
                         {recommendations.map((acc) => (
@@ -143,7 +144,7 @@ export function CartDrawer() {
                               className="text-xs text-accent hover:underline"
                               data-cursor="pointer"
                             >
-                              Add
+                              {labels.add}
                             </button>
                           </div>
                         ))}
@@ -158,14 +159,14 @@ export function CartDrawer() {
               <div className="border-t border-border p-6">
                 <div className="mb-4 flex items-center gap-2 text-sm text-foreground-secondary">
                   <Shield className="h-4 w-4" />
-                  <span>2-year warranty included</span>
+                  <span>{labels.warranty2y}</span>
                 </div>
                 <div className="mb-6 flex justify-between">
-                  <span className="text-foreground-secondary">Subtotal</span>
+                  <span className="text-foreground-secondary">{labels.subtotal}</span>
                   <span className="text-xl font-medium">{formatPrice(cartTotal)}</span>
                 </div>
                 <Link href="/checkout" onClick={() => setCartOpen(false)}>
-                  <Button className="w-full">Checkout</Button>
+                  <Button className="w-full">{labels.checkout}</Button>
                 </Link>
               </div>
             )}

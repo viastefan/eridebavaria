@@ -15,25 +15,26 @@ import {
 } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { products, formatPrice } from "@/lib/products";
+import { labels, accountTabs } from "@/lib/labels";
 
-const tabs = [
-  { id: "orders", label: "Orders", icon: Package },
-  { id: "invoices", label: "Invoices", icon: FileText },
-  { id: "warranty", label: "Warranty", icon: Shield },
-  { id: "downloads", label: "Downloads", icon: Download },
-  { id: "wishlist", label: "Wishlist", icon: Heart },
-  { id: "parts", label: "Replacement Parts", icon: Wrench },
-  { id: "vehicles", label: "My Vehicles", icon: Car },
-  { id: "support", label: "Support", icon: MessageCircle },
-];
+const tabIcons = {
+  orders: Package,
+  invoices: FileText,
+  warranty: Shield,
+  downloads: Download,
+  wishlist: Heart,
+  parts: Wrench,
+  vehicles: Car,
+  support: MessageCircle,
+};
 
 const mockOrders = [
   {
     id: "ER-2026-0042",
-    date: "Mar 8, 2026",
+    date: "8. März 2026",
     product: "EFO EM8 Elektro Chopper",
-    status: "In Transit",
-    total: 24990,
+    status: "Unterwegs",
+    total: 7990,
   },
 ];
 
@@ -50,35 +51,38 @@ export default function AccountPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="heading-xl">Account</h1>
+          <h1 className="heading-xl">{labels.account}</h1>
           <p className="mt-2 text-foreground-secondary">
-            Welcome back. Manage your vehicles and orders.
+            Willkommen zurück. Verwalte deine Fahrzeuge und Bestellungen.
           </p>
         </motion.div>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-[240px_1fr]">
           <nav className="flex gap-2 overflow-x-auto hide-scrollbar lg:flex-col lg:gap-1">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors ${
-                  activeTab === tab.id
-                    ? "bg-card text-foreground"
-                    : "text-foreground-secondary hover:text-foreground"
-                }`}
-                data-cursor="pointer"
-              >
-                <tab.icon className="h-4 w-4" />
-                {tab.label}
-              </button>
-            ))}
+            {accountTabs.map((tab) => {
+              const Icon = tabIcons[tab.id];
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors ${
+                    activeTab === tab.id
+                      ? "bg-card text-foreground"
+                      : "text-foreground-secondary hover:text-foreground"
+                  }`}
+                  data-cursor="pointer"
+                >
+                  <Icon className="h-4 w-4" />
+                  {tab.label}
+                </button>
+              );
+            })}
           </nav>
 
           <div className="rounded-2xl border border-border bg-card/30 p-8">
             {activeTab === "orders" && (
               <div className="space-y-4">
-                <h2 className="text-lg font-medium">Recent Orders</h2>
+                <h2 className="text-lg font-medium">Letzte Bestellungen</h2>
                 {mockOrders.map((order) => (
                   <div
                     key={order.id}
@@ -103,12 +107,12 @@ export default function AccountPage() {
 
             {activeTab === "wishlist" && (
               <div>
-                <h2 className="mb-6 text-lg font-medium">Wishlist</h2>
+                <h2 className="mb-6 text-lg font-medium">{labels.wishlist}</h2>
                 {wishlistProducts.length === 0 ? (
                   <p className="text-foreground-secondary">
-                    No saved vehicles yet.{" "}
+                    Noch keine gespeicherten Fahrzeuge.{" "}
                     <Link href="/shop" className="text-accent hover:underline">
-                      Explore collection
+                      {labels.exploreCollection}
                     </Link>
                   </p>
                 ) : (
@@ -132,7 +136,7 @@ export default function AccountPage() {
 
             {activeTab === "vehicles" && (
               <div>
-                <h2 className="mb-6 text-lg font-medium">Registered Vehicles</h2>
+                <h2 className="mb-6 text-lg font-medium">Registrierte Fahrzeuge</h2>
                 <Link
                   href="/support/efo-em8-elektro-chopper"
                   className="flex items-center justify-between rounded-xl border border-border p-6 transition-colors hover:bg-card"
@@ -140,10 +144,10 @@ export default function AccountPage() {
                   <div>
                     <span className="font-medium">EFO EM8 Elektro Chopper</span>
                     <span className="mt-1 block text-sm text-foreground-secondary">
-                      VIN: EB-2026-0042 · Registered Mar 2026
+                      FIN: EB-2026-0042 · Registriert März 2026
                     </span>
                   </div>
-                  <span className="text-accent">Support →</span>
+                  <span className="text-accent">{labels.vehicleSupport} →</span>
                 </Link>
               </div>
             )}
@@ -153,9 +157,9 @@ export default function AccountPage() {
                 <h2 className="mb-6 text-lg font-medium">Downloads</h2>
                 {[
                   "Fahrzeughandbuch — EFO EM8",
-                  "Digital Warranty Certificate",
-                  "Maintenance Guide",
-                  "Tutorial Videos",
+                  "Digitales Garantiezertifikat",
+                  "Wartungsleitfaden",
+                  "Tutorial-Videos",
                 ].map((doc) => (
                   <button
                     key={doc}
@@ -171,8 +175,8 @@ export default function AccountPage() {
 
             {!["orders", "wishlist", "vehicles", "downloads"].includes(activeTab) && (
               <div className="py-12 text-center text-foreground-secondary">
-                <p>{tabs.find((t) => t.id === activeTab)?.label} section</p>
-                <p className="mt-2 text-sm">Contact support for assistance.</p>
+                <p>{accountTabs.find((t) => t.id === activeTab)?.label}</p>
+                <p className="mt-2 text-sm">{labels.contactSupport} für Unterstützung.</p>
               </div>
             )}
           </div>

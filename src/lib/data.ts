@@ -65,13 +65,13 @@ export const whyChooseUs = [
   {
     title: "Persönliche Beratung",
     description:
-      "Jede Bestellung wird geprüft. Wir kontaktieren Sie persönlich, besprechen Ihre Anforderungen und klären alle Details.",
+      "Jede Bestellung wird geprüft. Wir kontaktieren dich persönlich, besprechen deine Anforderungen und klären alle Details.",
     image: images.em8[0],
   },
   {
     title: "EU-weiter Versand",
     description:
-      "Lieferung in ganz Europa. Sorgfältige Verpackung, Tracking und White-Glove-Handling auf Anfrage.",
+      "Lieferung in ganz Europa. Sorgfältige Verpackung, Tracking und Premium-Handling auf Anfrage.",
     image: images.etruck[0],
   },
   {
@@ -172,7 +172,7 @@ export const techFeatures = [
   },
   {
     id: "motor",
-    title: "Brushless Performance",
+    title: "Brushless-Leistung",
     description:
       "Wartungsarme Brushless-Motoren mit sofortigem Drehmoment und Rekuperation.",
   },

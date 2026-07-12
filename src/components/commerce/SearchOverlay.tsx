@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Search, ArrowRight, TrendingUp } from "lucide-react";
 import { useStore, getSearchResults } from "@/lib/store";
 import { trendingSearches } from "@/lib/products";
+import { labels } from "@/lib/labels";
 import type { SearchResult } from "@/lib/types";
 
 export function SearchOverlay() {
@@ -94,7 +95,7 @@ export function SearchOverlay() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search vehicles, accessories..."
+                placeholder={labels.searchPlaceholder}
                 className="w-full rounded-2xl border border-border bg-card py-5 pr-6 pl-14 text-lg outline-none transition-colors focus:border-accent/50"
               />
               <kbd className="absolute top-1/2 right-5 hidden -translate-y-1/2 rounded-lg border border-border px-2 py-1 text-xs text-foreground-secondary md:block">
@@ -108,7 +109,7 @@ export function SearchOverlay() {
                   {recentSearches.length > 0 && (
                     <div className="mb-6">
                       <span className="mb-3 block text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-                        Recent
+                        {labels.recent}
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {recentSearches.map((s) => (
@@ -126,7 +127,7 @@ export function SearchOverlay() {
                   )}
                   <div>
                     <span className="mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-                      <TrendingUp className="h-3 w-3" /> Trending
+                      <TrendingUp className="h-3 w-3" /> {labels.trending}
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {trendingSearches.map((s) => (
@@ -179,7 +180,7 @@ export function SearchOverlay() {
 
               {query && displayItems.length === 0 && (
                 <p className="py-8 text-center text-foreground-secondary">
-                  No results for &ldquo;{query}&rdquo;
+                  {labels.noResults} &ldquo;{query}&rdquo;
                 </p>
               )}
             </div>

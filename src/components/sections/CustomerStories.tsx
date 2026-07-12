@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { stories } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { labels } from "@/lib/labels";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,9 +44,9 @@ export function CustomerStories() {
     >
       <div className="section-padding">
         <SectionHeading
-          label="Stories"
-          title="Journeys Reimagined"
-          description="Real people. Real change. Electric freedom."
+          label="Geschichten"
+          title="Neu erfundene Wege"
+          description="Echte Menschen. Echter Wandel. Elektrische Freiheit."
           className="mb-20"
         />
 
@@ -72,14 +73,14 @@ export function CustomerStories() {
                   className={`flex flex-col justify-center p-10 md:p-16 ${index % 2 === 1 ? "md:[direction:ltr]" : ""}`}
                 >
                   <span className="text-xs uppercase tracking-[0.2em] text-accent">
-                    {story.readTime} read
+                    {story.readTime} Lesezeit
                   </span>
                   <h3 className="heading-lg mt-4 max-w-md">{story.title}</h3>
                   <p className="mt-4 max-w-sm text-foreground-secondary">
                     {story.excerpt}
                   </p>
                   <span className="mt-8 text-sm font-medium text-foreground transition-colors group-hover:text-accent">
-                    Read story →
+                    {labels.readStory} →
                   </span>
                 </div>
               </div>

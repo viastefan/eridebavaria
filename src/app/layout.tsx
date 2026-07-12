@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     "Premium E-Fahrzeuge für Europa. Chopper, Quads, Kleinwagen, Transporter — kuratiert und persönlich beraten.",
   metadataBase: new URL("https://eridebavaria.com"),
   openGraph: {
-    title: "eRide Bavaria — Move Beyond Roads",
+    title: "eRide Bavaria — Jenseits der Straße",
     description:
-      "Premium European electric vehicles. Experience movement without compromise.",
+      "Premium E-Fahrzeuge für Europa. Chopper, Quads, Kleinwagen, Transporter — kuratiert und persönlich beraten.",
     type: "website",
   },
 };
@@ -36,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="de"
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="min-h-full bg-background font-sans text-foreground antialiased">

@@ -4,20 +4,15 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Search,
-  Heart,
-  ShoppingBag,
-  User,
-  Menu,
-} from "lucide-react";
+import { Search, Heart, ShoppingBag, User, Menu } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { MegaMenu } from "@/components/commerce/MegaMenu";
+import { labels } from "@/lib/labels";
 
 const navLinks = [
   { label: "Kollektion", href: "/shop" },
   { label: "Technologie", href: "/#technology" },
-  { label: "Stories", href: "/#stories" },
+  { label: "Geschichten", href: "/#stories" },
   { label: "Vergleich", href: "/compare" },
 ];
 
@@ -61,13 +56,11 @@ export function Navigation() {
         transition={{ duration: 1, delay: isHome ? 2.2 : 0, ease: [0.16, 1, 0.3, 1] }}
       >
         <nav className="flex items-center justify-between px-6">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-1.5" data-cursor="pointer">
             <span className="text-base font-medium tracking-tight">eRide</span>
             <span className="text-base font-light text-foreground-secondary">Bavaria</span>
           </Link>
 
-          {/* Center nav */}
           <div className="hidden items-center gap-8 lg:flex">
             <button
               onClick={() => setMegaMenuOpen(!megaMenuOpen)}
@@ -77,7 +70,7 @@ export function Navigation() {
               data-cursor="pointer"
             >
               <Menu className="h-4 w-4" />
-              Shop
+              {labels.shop}
             </button>
             {navLinks.map((link) => (
               <Link
@@ -91,12 +84,11 @@ export function Navigation() {
             ))}
           </div>
 
-          {/* Right icons */}
           <div className="flex items-center gap-1 md:gap-2">
             <button
               onClick={() => setSearchOpen(true)}
               className="rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground"
-              aria-label="Search"
+              aria-label={labels.search}
               data-cursor="pointer"
             >
               <Search className="h-4 w-4" />
@@ -104,16 +96,18 @@ export function Navigation() {
             <Link
               href="/account"
               className="hidden rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground md:block"
+              aria-label={labels.wishlist}
               data-cursor="pointer"
             >
               <Heart className="h-4 w-4" />
               {wishlist.length > 0 && (
-                <span className="sr-only">{wishlist.length} wishlisted</span>
+                <span className="sr-only">{wishlist.length} auf der Merkliste</span>
               )}
             </Link>
             <Link
               href="/compare"
               className="relative hidden rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground md:block"
+              aria-label={labels.compare}
               data-cursor="pointer"
             >
               <span className="text-xs font-medium">vs</span>
@@ -126,7 +120,7 @@ export function Navigation() {
             <button
               onClick={() => setCartOpen(true)}
               className="relative rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground"
-              aria-label="Cart"
+              aria-label={labels.cart}
               data-cursor="pointer"
             >
               <ShoppingBag className="h-4 w-4" />
@@ -139,6 +133,7 @@ export function Navigation() {
             <Link
               href="/account"
               className="hidden rounded-full p-2.5 text-foreground-secondary transition-colors hover:bg-white/5 hover:text-foreground lg:block"
+              aria-label={labels.account}
               data-cursor="pointer"
             >
               <User className="h-4 w-4" />
@@ -147,7 +142,7 @@ export function Navigation() {
             <button
               className="ml-1 flex flex-col gap-1.5 p-2 lg:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
+              aria-label={labels.toggleMenu}
             >
               <span className={`block h-px w-5 bg-foreground transition-transform ${mobileOpen ? "translate-y-[5px] rotate-45" : ""}`} />
               <span className={`block h-px w-5 bg-foreground transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
@@ -174,7 +169,7 @@ export function Navigation() {
               }}
               className="heading-lg text-left"
             >
-              Shop
+              {labels.shop}
             </button>
             {navLinks.map((link, i) => (
               <motion.div
@@ -189,7 +184,7 @@ export function Navigation() {
               </motion.div>
             ))}
             <Link href="/account" className="text-foreground-secondary" onClick={() => setMobileOpen(false)}>
-              Account
+              {labels.account}
             </Link>
           </motion.div>
         )}

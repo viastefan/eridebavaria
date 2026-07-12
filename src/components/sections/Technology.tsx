@@ -77,7 +77,7 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             fontSize="10"
             letterSpacing="2"
           >
-            BATTERY MODULE
+            BATTERIEMODUL
           </text>
         </g>
 
@@ -149,7 +149,7 @@ function BlueprintAnimation({ activeId }: { activeId: string }) {
             fontSize="10"
             letterSpacing="2"
           >
-            DUAL MOTOR
+            DUALMOTOR
           </text>
         </g>
       </svg>
@@ -216,9 +216,9 @@ export function Technology() {
 
       <div className="section-padding relative">
         <SectionHeading
-          label="Technology"
-          title="Engineering the Future"
-          description="Bavarian precision meets electric innovation."
+          label="Technologie"
+          title="Technik der Zukunft"
+          description="Bayerische Präzision trifft elektrische Innovation."
           className="mb-20"
         />
 

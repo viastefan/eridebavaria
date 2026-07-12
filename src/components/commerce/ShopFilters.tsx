@@ -3,8 +3,8 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, X } from "lucide-react";
-import { products } from "@/lib/products";
 import type { Product } from "@/lib/types";
+import { labels, availabilityLabels, filterLabels } from "@/lib/labels";
 
 export interface FilterState {
   types: string[];
@@ -63,7 +63,7 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
     <div className="space-y-8">
       <div>
         <h4 className="mb-4 text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-          Vehicle Type
+          {filterLabels.vehicleType}
         </h4>
         <div className="flex flex-wrap gap-2">
           {vehicleTypes.map((type) => (
@@ -85,7 +85,7 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
 
       <div>
         <h4 className="mb-4 text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-          Price Range
+          {filterLabels.priceRange}
         </h4>
         <div className="flex items-center gap-4">
           <input
@@ -98,14 +98,14 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
             className="w-full accent-accent"
           />
           <span className="shrink-0 text-sm text-foreground-secondary">
-            up to €{(filters.priceMax / 1000).toFixed(0)}k
+            {filterLabels.upTo} €{(filters.priceMax / 1000).toFixed(0)}k
           </span>
         </div>
       </div>
 
       <div>
         <h4 className="mb-4 text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-          Min Range
+          {filterLabels.minRange}
         </h4>
         <div className="flex items-center gap-4">
           <input
@@ -125,10 +125,10 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
 
       <div>
         <h4 className="mb-4 text-xs uppercase tracking-[0.2em] text-foreground-secondary">
-          Availability
+          {filterLabels.availability}
         </h4>
         <div className="flex flex-wrap gap-2">
-          {["in-stock", "pre-order"].map((status) => (
+          {(["in-stock", "pre-order"] as const).map((status) => (
             <button
               key={status}
               onClick={() => {
@@ -137,14 +137,14 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
                   : [...filters.availability, status];
                 onChange({ ...filters, availability });
               }}
-              className={`rounded-full px-4 py-2 text-sm capitalize transition-all ${
+              className={`rounded-full px-4 py-2 text-sm transition-all ${
                 filters.availability.includes(status)
                   ? "bg-foreground text-background"
                   : "border border-border"
               }`}
               data-cursor="pointer"
             >
-              {status.replace("-", " ")}
+              {availabilityLabels[status]}
             </button>
           ))}
         </div>
@@ -156,17 +156,20 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
           className="text-sm text-accent hover:underline"
           data-cursor="pointer"
         >
-          Clear all filters
+          {labels.clearFilters}
         </button>
       )}
     </div>
   );
 
+  const vehicleLabel =
+    resultCount === 1 ? labels.vehicle : labels.vehicles;
+
   return (
     <>
       <div className="mb-8 flex items-center justify-between">
         <p className="text-sm text-foreground-secondary">
-          {resultCount} vehicle{resultCount !== 1 ? "s" : ""}
+          {resultCount} {vehicleLabel}
         </p>
         <button
           onClick={() => setOpen(true)}
@@ -174,7 +177,7 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
           data-cursor="pointer"
         >
           <SlidersHorizontal className="h-4 w-4" />
-          Filters
+          {labels.filters}
           {activeCount > 0 && (
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs text-background">
               {activeCount}
@@ -206,7 +209,7 @@ export function ShopFilters({ filters, onChange, resultCount }: ShopFiltersProps
               exit={{ opacity: 0, y: 40 }}
             >
               <div className="mb-6 flex items-center justify-between">
-                <h3 className="text-lg font-medium">Filters</h3>
+                <h3 className="text-lg font-medium">{labels.filters}</h3>
                 <button onClick={() => setOpen(false)} data-cursor="pointer">
                   <X className="h-5 w-5" />
                 </button>
