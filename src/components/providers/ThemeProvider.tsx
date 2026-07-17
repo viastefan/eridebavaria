@@ -20,6 +20,7 @@ export function ThemeProvider({
       defaultTheme={themeConfig.defaultTheme}
       enableSystem={themeConfig.enableSystem}
       themes={[...themeConfig.themes]}
+      storageKey={themeConfig.storageKey}
       initialTheme={initialTheme ?? undefined}
       noScript={noScript}
       disableTransitionOnChange={false}

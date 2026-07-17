@@ -6,9 +6,14 @@ export function HomeHighlights() {
   return (
     <section className="porsche-section porsche-section--highlights bg-background">
       <Container>
+        <p className="porsche-eyebrow">Service & Shop</p>
         <h2 className="porsche-headline porsche-headline--sm">
-          eRide Highlights
+          Das könnte auch für Sie interessant sein
         </h2>
+        <p className="porsche-subline porsche-subline--section">
+          Katalog, Gewerbe oder Zubehör — alles aus einer Hand, mit persönlicher Beratung
+          aus Simbach.
+        </p>
         <div className="porsche-grid porsche-grid--highlights">
           {homeHighlightCards.map((card) => (
             <HomeImageCard

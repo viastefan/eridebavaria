@@ -7,8 +7,12 @@ export function HomeModelUniverse() {
     <section className="porsche-section bg-background" id="collection">
       <Container>
         <h2 className="porsche-headline">
-          Ihr E-Mobilitäts-Abenteuer beginnt jetzt.
+          Ihre E-Mobilität — persönlich beraten aus Simbach.
         </h2>
+        <p className="porsche-subline porsche-subline--section">
+          Wählen Sie die Kategorie, die zu Ihrem Alltag passt. Wir helfen Ihnen gern bei der
+          Entscheidung — unverbindlich und auf Augenhöhe.
+        </p>
 
         <div className="porsche-grid porsche-grid--models">
           {homeModelCards.map((card) => (

@@ -353,10 +353,12 @@ export function CinematicScrollHero({
     fullscreen = false,
   } = config;
 
-  const activeVideoSrc =
-    resolvedTheme === "light"
-      ? videoSrcLight ?? videoFallback ?? videoSrc
-      : videoSrc;
+  const isLightTheme = resolvedTheme === "light";
+  const activeVideoSrc = isLightTheme
+    ? videoSrcLight ?? videoFallback ?? videoSrc
+    : videoSrc ?? videoFallback;
+
+  const useVideo = Boolean(videoSrc || videoSrcLight) && !imageSequence?.length;
 
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -613,7 +615,7 @@ export function CinematicScrollHero({
       if (video.readyState >= 2) onReady();
     }
 
-    const hasVideo = Boolean(activeVideoSrc) && !imageSequence?.length;
+    const hasVideo = useVideo;
     let resizeRaf = 0;
     resizeObserver = new ResizeObserver(() => {
       if (!hasVideo || !canvas) return;
@@ -647,7 +649,7 @@ export function CinematicScrollHero({
       video?.removeEventListener("error", onVideoError);
       trigger?.kill();
     };
-  }, [scrollReady, id, imageSequence, videoFallback, videoSrc, videoSrcLight, activeVideoSrc, fullscreen, effectiveScrollVh]);
+  }, [scrollReady, id, imageSequence, videoFallback, videoSrc, fullscreen, effectiveScrollVh, useVideo]);
 
   useEffect(() => {
     if (!markHeroActive) return;
@@ -667,13 +669,12 @@ export function CinematicScrollHero({
     first.style.zIndex = "3";
   }, []);
 
-  const useVideo = Boolean(activeVideoSrc) && !imageSequence?.length;
-
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !activeVideoSrc || imageSequence?.length) return;
     if (video.src.includes(activeVideoSrc)) return;
     setVideoReady(false);
+    setupDoneRef.current = false;
     video.src = activeVideoSrc;
     video.load();
   }, [activeVideoSrc, imageSequence]);
@@ -682,7 +683,11 @@ export function CinematicScrollHero({
     <section
       ref={sectionRef}
       id={id}
-      className={cn("hero-cinematic", fullscreen && "hero-cinematic--fullscreen")}
+      className={cn(
+        "hero-cinematic",
+        fullscreen && "hero-cinematic--fullscreen",
+        resolvedTheme === "light" ? "hero-cinematic--light" : "hero-cinematic--dark"
+      )}
       style={{ height: `${effectiveScrollVh}vh` }}
     >
       <div ref={stageRef} className="hero-cinematic__stage">

@@ -11,6 +11,27 @@
   --radius-lg: 16px;
   --max-content: 1280px;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Dark mode ist Standard — nur .light überschreibt */
+  color-scheme: dark;
+  --background: #0a0a0a;
+  --surface: #111111;
+  --card: #141414;
+  --card-elevated: #1a1a1a;
+  --foreground: #ffffff;
+  --foreground-secondary: rgba(255, 255, 255, 0.55);
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #4b7bec;
+  --accent-glow: rgba(75, 123, 236, 0.2);
+  --nav-shadow: rgba(0, 0, 0, 0.4);
+  --nav-bg: rgba(10, 10, 10, 0.82);
+  --nav-bg-scrolled: rgba(10, 10, 10, 0.94);
+  --nav-bg-cinematic: rgba(5, 5, 5, 0.78);
+  --nav-hover: rgba(255, 255, 255, 0.08);
+  --nav-fg: #ffffff;
+  --nav-fg-muted: rgba(255, 255, 255, 0.58);
+  --card-shine: rgba(255, 255, 255, 0.06);
+  --accent-secondary: #7ba3f5;
 }
 
 .light {
@@ -38,75 +59,6 @@
 
 .dark {
   color-scheme: dark;
-
-  --background: #0a0a0a;
-  --surface: #111111;
-  --card: #141414;
-  --card-elevated: #1a1a1a;
-  --foreground: #ffffff;
-  --foreground-secondary: rgba(255, 255, 255, 0.55);
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #4b7bec;
-  --accent-glow: rgba(75, 123, 236, 0.2);
-  --nav-shadow: rgba(0, 0, 0, 0.4);
-  --nav-bg: rgba(10, 10, 10, 0.82);
-  --nav-bg-scrolled: rgba(10, 10, 10, 0.94);
-  --nav-bg-cinematic: rgba(5, 5, 5, 0.78);
-  --nav-hover: rgba(255, 255, 255, 0.08);
-  --nav-fg: #ffffff;
-  --nav-fg-muted: rgba(255, 255, 255, 0.58);
-  --card-shine: rgba(255, 255, 255, 0.06);
-  --accent-secondary: #7ba3f5;
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not(.dark) {
-    color-scheme: light;
-
-    --background: #ffffff;
-    --surface: #f7f8fa;
-    --card: #f7f8fa;
-    --card-elevated: #ffffff;
-    --foreground: #111111;
-    --foreground-secondary: #667085;
-    --border: rgba(17, 17, 17, 0.08);
-    --accent: #4b7bec;
-    --accent-glow: rgba(75, 123, 236, 0.12);
-    --nav-shadow: rgba(17, 17, 17, 0.06);
-    --nav-bg: rgba(255, 255, 255, 0.82);
-    --nav-bg-scrolled: rgba(255, 255, 255, 0.92);
-    --nav-bg-cinematic: rgba(5, 5, 5, 0.72);
-    --nav-hover: rgba(17, 17, 17, 0.05);
-    --nav-fg: var(--foreground);
-    --nav-fg-muted: var(--foreground-secondary);
-    --card-shine: rgba(255, 255, 255, 0.55);
-    --accent-secondary: #6b93f0;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-
-    --background: #0a0a0a;
-    --surface: #111111;
-    --card: #141414;
-    --card-elevated: #1a1a1a;
-    --foreground: #ffffff;
-    --foreground-secondary: rgba(255, 255, 255, 0.55);
-    --border: rgba(255, 255, 255, 0.08);
-    --accent: #4b7bec;
-    --accent-glow: rgba(75, 123, 236, 0.2);
-    --nav-shadow: rgba(0, 0, 0, 0.4);
-    --nav-bg: rgba(10, 10, 10, 0.82);
-    --nav-bg-scrolled: rgba(10, 10, 10, 0.94);
-    --nav-bg-cinematic: rgba(5, 5, 5, 0.78);
-    --nav-hover: rgba(255, 255, 255, 0.08);
-    --nav-fg: #ffffff;
-    --nav-fg-muted: rgba(255, 255, 255, 0.58);
-    --card-shine: rgba(255, 255, 255, 0.06);
-    --accent-secondary: #7ba3f5;
-  }
 }
 
 @theme inline {
@@ -423,11 +375,40 @@ textarea::placeholder {
   padding-block: 10px;
   padding-top: calc(10px + env(safe-area-inset-top, 0px));
   background: transparent;
-  border-bottom: 1px solid transparent;
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease,
-    backdrop-filter 0.35s ease;
+  border-bottom: none;
+  isolation: isolate;
+  transition: background-color 0.35s ease;
+}
+
+.nav-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--nav-hairline, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  transition: opacity 0.35s ease;
+}
+
+.nav-bar--cinematic-solid::after,
+.nav-bar--solid::after {
+  opacity: 1;
+}
+
+.nav-bar--cinematic-solid::after {
+  --nav-hairline: rgba(255, 255, 255, 0.08);
+}
+
+.nav-bar--solid::after {
+  --nav-hairline: var(--border);
+}
+
+.nav-bar--dark.nav-bar--solid::after {
+  --nav-hairline: var(--border);
 }
 
 .nav-bar__inner {
@@ -461,7 +442,6 @@ textarea::placeholder {
   background: var(--nav-bg-scrolled);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-bottom-color: var(--border);
 }
 
 .nav-bar--top:not(.nav-bar--cinematic) {
@@ -471,7 +451,17 @@ textarea::placeholder {
 /* Cinematic hero / product — never white */
 .nav-bar--cinematic {
   background: transparent;
-  border-bottom-color: transparent;
+}
+
+.nav-bar--cinematic.nav-bar--cinematic-solid {
+  background: var(--nav-bg-cinematic);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Dark theme — solid bar only, never overrides cinematic */
+.nav-bar--dark.nav-bar--solid {
+  background: var(--nav-bg-scrolled);
 }
 
 .nav-bar--cinematic .nav-bar__logo,
@@ -495,19 +485,6 @@ textarea::placeholder {
 .nav-bar--cinematic .nav-bar__menu span::before,
 .nav-bar--cinematic .nav-bar__menu span::after {
   background: #ffffff;
-}
-
-.nav-bar--cinematic.nav-bar--cinematic-solid {
-  background: var(--nav-bg-cinematic);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-}
-
-/* Dark theme — solid bar only, never overrides cinematic */
-.nav-bar--dark.nav-bar--solid {
-  background: var(--nav-bg-scrolled);
-  border-bottom-color: var(--border);
 }
 
 .nav-bar--dark:not(.nav-bar--cinematic) .nav-bar__logo {
@@ -554,27 +531,27 @@ textarea::placeholder {
   color: rgba(255, 255, 255, 0.55);
 }
 
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__logo,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__link,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__icon,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__logo-muted {
-  color: rgba(17, 17, 17, 0.88);
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__logo,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__link,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__icon,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__logo-muted {
+  color: rgba(255, 255, 255, 0.88);
 }
 
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__link:hover,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__link--active,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__icon:hover {
-  color: #111111;
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__link:hover,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__link--active,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__icon:hover {
+  color: #ffffff;
 }
 
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__icon:hover {
-  background: rgba(17, 17, 17, 0.06);
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__icon:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__menu span,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__menu span::before,
-html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__menu span::after {
-  background: #111111;
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__menu span,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__menu span::before,
+.nav-bar--cinematic:not(.nav-bar--cinematic-solid) .nav-bar__menu span::after {
+  background: #ffffff;
 }
 
 .nav-bar__links {
@@ -1097,6 +1074,27 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
   text-align: center;
 }
 
+.porsche-section--welcome {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.porsche-eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.porsche-subline--welcome,
+.porsche-subline--section {
+  margin-top: 0;
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  max-width: 40rem;
+}
+
 .porsche-headline {
   margin: 0 0 clamp(2rem, 4vw, 3rem);
   font-size: clamp(1.75rem, 3.5vw, 2.75rem);
@@ -1189,6 +1187,11 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
   transition: transform 0.35s var(--ease-premium), box-shadow 0.35s ease;
 }
 
+.porsche-card--highlight {
+  aspect-ratio: 4 / 5;
+  min-height: 320px;
+}
+
 .porsche-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 40px var(--nav-shadow);
@@ -1209,7 +1212,9 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
 }
 
 .porsche-card--highlight .porsche-card__media {
-  aspect-ratio: 16 / 11;
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
 }
 
 .porsche-card__image {
@@ -1378,7 +1383,7 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
 }
 
 .porsche-finder:hover {
-  background: #f0f1f3;
+  background: color-mix(in srgb, var(--foreground) 4%, var(--surface));
   transform: translateY(-1px);
 }
 
@@ -1435,6 +1440,10 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
 .consultation--porsche {
   display: grid;
   gap: 2.5rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 @media (min-width: 900px) {
@@ -1444,9 +1453,35 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
   }
 }
 
+/* Dark mode — Porsche-Startseite */
+.dark .porsche-section,
+.dark main {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.dark .porsche-finder {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.dark .porsche-finder:hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--surface));
+}
+
+.dark .consultation--porsche {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.dark .porsche-section--journal .journal-card {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
 /* ─── Showroom gallery (premium catalog) ─── */
 .showroom-catalog {
-  background: #ffffff;
+  background: var(--background);
 }
 
 .showroom-catalog__title {
@@ -4148,71 +4183,10 @@ html.light[data-hero-active] .nav-bar--cinematic:not(.nav-bar--cinematic-solid) 
   pointer-events: none;
 }
 
-html.light[data-hero-active] .hero-cinematic,
-html.dark[data-hero-active] .hero-cinematic {
+/* Hero bleibt cinematic-dunkel in beiden Themes — nur das Video wechselt im Light Mode */
+html[data-hero-active] .hero-cinematic,
+html[data-hero-active] .hero-cinematic__stage {
   background: #050505;
-}
-
-html.light[data-hero-active] .hero-cinematic {
-  background: #ffffff;
-}
-
-html.light[data-hero-active] .hero-cinematic__stage {
-  background: #ffffff;
-}
-
-html.light[data-hero-active] .heading-cinematic-t1 {
-  color: #111111;
-}
-
-html.light[data-hero-active] .heading-cinematic-t1__muted {
-  color: rgba(17, 17, 17, 0.46);
-}
-
-html.light[data-hero-active] .hero-cinematic__desc,
-html.light[data-hero-active] .hero-cinematic__desc--t1 {
-  color: rgba(17, 17, 17, 0.62);
-}
-
-html.light[data-hero-active] .hero-showroom__vehicle-type {
-  color: rgba(17, 17, 17, 0.5);
-}
-
-html.light[data-hero-active] .hero-showroom__specs {
-  border-top-color: rgba(17, 17, 17, 0.08);
-}
-
-html.light[data-hero-active] .hero-showroom__spec-label {
-  color: rgba(17, 17, 17, 0.45);
-}
-
-html.light[data-hero-active] .hero-showroom__spec-value {
-  color: #111111;
-}
-
-html.light[data-hero-active] .hero-cinematic__chapter-label {
-  color: rgba(17, 17, 17, 0.45);
-}
-
-html.light[data-hero-active] .hero-cinematic__rail-item {
-  color: rgba(17, 17, 17, 0.35);
-}
-
-html.light[data-hero-active] .hero-cinematic__rail-item.is-active {
-  color: #111111;
-}
-
-html.light[data-hero-active] .hero-cinematic__progress-label {
-  color: rgba(17, 17, 17, 0.45);
-}
-
-html.light[data-hero-active] .hero-cinematic__scroll-hint {
-  color: rgba(17, 17, 17, 0.5);
-}
-
-html.light[data-hero-active] .hero-cinematic__btn--ghost {
-  color: #111111;
-  border-color: rgba(17, 17, 17, 0.15);
 }
 
 /* Hero bleibt dunkel — Seite folgt dem Theme */
@@ -4987,7 +4961,7 @@ html[data-hero-active] main {
 }
 
 .journal-card:hover {
-  border-color: rgba(17, 17, 17, 0.14);
+  border-color: color-mix(in srgb, var(--foreground) 12%, var(--border));
   box-shadow: 0 12px 40px var(--nav-shadow);
 }
 

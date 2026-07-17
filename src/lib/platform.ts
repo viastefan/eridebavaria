@@ -1,4 +1,5 @@
 import { regional } from "./regional";
+import { images } from "./images";
 
 export const platform = {
   brand: {
@@ -172,7 +173,7 @@ export const journalArticles = [
       "Reichweite, Zulassung, Wartung — alles, was Sie vor dem Kauf wissen sollten. Von unseren Experten in Simbach am Inn.",
     readTime: "12 Min.",
     date: "März 2026",
-    image: "/media/veo-hero-poster.png",
+    image: images.em8[0],
     featured: true,
   },
   {
@@ -183,7 +184,7 @@ export const journalArticles = [
       "Wie Handwerks- und Hofbetriebe zwischen Simbach und Braunau Emissionen senken und den letzten Kilometer elektrisch fahren.",
     readTime: "8 Min.",
     date: "Februar 2026",
-    image: "https://ebuddys.at/wp-content/uploads/2025/08/463_0.jpg",
+    image: images.etruck[0],
     featured: false,
   },
   {
@@ -194,7 +195,7 @@ export const journalArticles = [
       "Was Ihr Fahrzeug über den Akku mitteilt — und wie unsere Werkstatt in Simbach die Lebensdauer schützt.",
     readTime: "6 Min.",
     date: "Februar 2026",
-    image: "https://ebuddys.at/wp-content/uploads/2024/11/1000010367.png",
+    image: images.ek4[0],
     featured: false,
   },
   {

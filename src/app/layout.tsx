@@ -52,10 +52,13 @@ export default async function RootLayout({
     initialTheme: initialTheme ?? undefined,
   });
 
+  const themeClass =
+    initialTheme === "dark" || initialTheme === "light" ? initialTheme : themeConfig.defaultTheme;
+
   return (
     <html
       lang="de"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full ${themeClass}`}
       suppressHydrationWarning
     >
       <head>

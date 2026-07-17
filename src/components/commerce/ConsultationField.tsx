@@ -14,8 +14,8 @@ interface ConsultationFieldProps {
 }
 
 export function ConsultationField({
-  title = "Machen Sie es zu Ihrem Fahrzeug.",
-  description = "Beschreiben Sie Ihren Einsatz — wir melden uns persönlich, besprechen Batterie- und Zubehöroptionen und erstellen ein individuelles Angebot.",
+  title = "Wir sind gern für Sie da.",
+  description = "Schreiben Sie uns, wofür Sie das Fahrzeug brauchen — wir melden uns persönlich, besprechen alles in Ruhe und erstellen Ihnen ein passendes Angebot. Unverbindlich.",
   productName,
   productId,
   className = "",

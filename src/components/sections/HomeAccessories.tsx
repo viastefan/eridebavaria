@@ -9,12 +9,13 @@ export function HomeAccessories() {
   return (
     <section className="porsche-section bg-background">
       <Container>
+        <p className="porsche-eyebrow">Shop</p>
         <h2 className="porsche-headline porsche-headline--sm">
-          Zubehör & Ersatzteile
+          Passendes Zubehör — gleich mitbestellen
         </h2>
-        <p className="porsche-subline">
-          Passend zu Ihrem Fahrzeug — direkt bestellbar oder als Ergänzung zur
-          Fahrzeuganfrage.
+        <p className="porsche-subline porsche-subline--section">
+          Ladegeräte, Helme und mehr — direkt in den Warenkorb oder als Ergänzung zu
+          Ihrer Fahrzeuganfrage.
         </p>
 
         <div className="porsche-grid porsche-grid--highlights">

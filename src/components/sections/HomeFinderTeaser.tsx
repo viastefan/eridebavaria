@@ -9,13 +9,13 @@ export function HomeFinderTeaser() {
         <Link href="/shop" className="porsche-finder">
           <div className="porsche-finder__content">
             <h2 className="porsche-finder__title">
-              Finden Sie Ihr E-Fahrzeug.
+              Noch unsicher? Wir finden gemeinsam das passende Modell.
             </h2>
             <p className="porsche-finder__text">
-              Stöbern Sie im Katalog, vergleichen Sie Modelle und legen Sie Ihre
-              Favoriten in den Warenkorb — wir melden uns persönlich bei Ihnen.
+              Im Katalog können Sie Preise sehen, Modelle vergleichen und Favoriten merken.
+              Danach melden wir uns persönlich bei Ihnen — ganz ohne Verkaufsdruck.
             </p>
-            <span className="porsche-finder__cta">Zum Fahrzeugkatalog</span>
+            <span className="porsche-finder__cta">Jetzt Katalog entdecken</span>
           </div>
           <span className="porsche-finder__arrow" aria-hidden>
             <ArrowUpRight className="h-5 w-5" strokeWidth={2} />

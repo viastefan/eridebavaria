@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero/Hero";
+import { HomeWelcome } from "@/components/sections/HomeWelcome";
 import { HomePromoGrid } from "@/components/sections/HomePromoGrid";
 import { HomeModelUniverse } from "@/components/sections/HomeModelUniverse";
 import { HomeFinderTeaser } from "@/components/sections/HomeFinderTeaser";
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <main className="bg-background text-foreground">
       <Hero />
+      <HomeWelcome />
       <HomePromoGrid />
       <HomeModelUniverse />
       <HomeFinderTeaser />

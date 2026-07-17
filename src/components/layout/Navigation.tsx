@@ -42,16 +42,35 @@ export function Navigation() {
 
   useEffect(() => {
     const heroId = pathname === "/" ? "hero" : pathname.startsWith("/product/") ? "product-hero" : null;
+    const scrolledRef = { current: false };
+    const pastHeroRef = { current: false };
 
     const onScroll = (y: number) => {
-      const nextScrolled = y > 16;
+      const nextScrolled = scrolledRef.current
+        ? y > 8
+        : y > 56;
+      if (nextScrolled !== scrolledRef.current) {
+        scrolledRef.current = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+
       let nextPastHero = true;
       if (heroId) {
         const hero = document.getElementById(heroId);
-        nextPastHero = hero ? y >= hero.offsetHeight - 72 : y > 400;
+        if (hero) {
+          const threshold = hero.offsetHeight - 72;
+          nextPastHero = pastHeroRef.current
+            ? y >= threshold - 48
+            : y >= threshold + 48;
+        } else {
+          nextPastHero = y > 400;
+        }
       }
-      setScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
-      setPastHero((prev) => (prev === nextPastHero ? prev : nextPastHero));
+
+      if (nextPastHero !== pastHeroRef.current) {
+        pastHeroRef.current = nextPastHero;
+        setPastHero(nextPastHero);
+      }
     };
 
     if (lenis) {
@@ -88,7 +107,7 @@ export function Navigation() {
   }, [mobileOpen]);
 
   const onCinematic = isCinematicPage && !pastHero;
-  const isDark = resolvedTheme === "dark";
+  const isDark = resolvedTheme !== "light";
 
   return (
     <>
