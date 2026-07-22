@@ -1,6 +1,7 @@
 "use client";
 
 import { Navigation } from "@/components/layout/Navigation";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { Footer } from "@/components/layout/Footer";
 import { SearchOverlay } from "@/components/commerce/SearchOverlay";
 import { CartDrawer } from "@/components/commerce/CartDrawer";
@@ -16,12 +17,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <StoreProvider>
       <SmoothScrollProvider>
-        <SearchOverlay />
-        <CartDrawer />
-        {!isShowroom && <Navigation />}
-        {children}
-        {!isShowroom && <Footer />}
-        <CookieBanner />
+        <div className="app-shell">
+          <SearchOverlay />
+          <CartDrawer />
+          {!isShowroom && <Navigation />}
+          <div className="app-shell__content">{children}</div>
+          {!isShowroom && <Footer />}
+          {!isShowroom && <MobileBottomNav />}
+          <CookieBanner />
+        </div>
       </SmoothScrollProvider>
     </StoreProvider>
   );

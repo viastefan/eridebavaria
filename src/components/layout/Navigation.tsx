@@ -158,7 +158,7 @@ export function Navigation() {
               </button>
               <Link
                 href={session ? (session.role === "ADMIN" || session.role === "EMPLOYEE" ? "/admin" : "/portal") : "/login"}
-                className="nav-bar__icon hidden sm:flex"
+                className="nav-bar__icon hidden lg:flex"
                 aria-label={session ? "Mein Konto" : accountNav.label}
                 title={session ? `${session.firstName ?? session.email}` : accountNav.label}
               >
@@ -167,7 +167,7 @@ export function Navigation() {
               <button
                 type="button"
                 onClick={() => setCartOpen(true)}
-                className="nav-bar__icon relative"
+                className="nav-bar__icon relative hidden lg:flex"
                 aria-label="Warenkorb"
               >
                 <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.5} />
@@ -203,7 +203,8 @@ export function Navigation() {
             aria-label="Navigation"
             className={cn("nav-mobile lg:hidden", isDark && "nav-mobile--dark", onCinematic && "nav-mobile--cinematic")}
           >
-            <div className="container py-4">
+            <div className="container py-4 pb-28">
+              <p className="nav-mobile__eyebrow">Menü</p>
               {mainNav.map((link) => (
                 <Link
                   key={link.href}
@@ -220,6 +221,13 @@ export function Navigation() {
                 onClick={() => setMobileOpen(false)}
               >
                 {session ? "Mein Konto" : accountNav.label}
+              </Link>
+              <Link
+                href="/#beratung"
+                className="nav-mobile__cta"
+                onClick={() => setMobileOpen(false)}
+              >
+                Beratung anfragen
               </Link>
             </div>
           </div>
