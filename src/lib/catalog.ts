@@ -1,17 +1,26 @@
 import { prisma } from "./db";
+import {
+  products as staticProducts,
+  accessoryCatalog as staticAccessories,
+  featuredProductId as staticFeaturedId,
+} from "./products";
 import type { Product, Accessory, ProductConfigurator } from "./types";
 
 type DbProduct = Awaited<ReturnType<typeof fetchDbProduct>>;
 
 async function fetchDbProduct(where: { slug?: string; id?: string }) {
-  return prisma.product.findFirst({
-    where: {
-      ...where,
-      status: "ACTIVE",
-      available: true,
-    },
-    include: { category: true, configOptions: { orderBy: { sortOrder: "asc" } } },
-  });
+  try {
+    return await prisma.product.findFirst({
+      where: {
+        ...where,
+        status: "ACTIVE",
+        available: true,
+      },
+      include: { category: true, configOptions: { orderBy: { sortOrder: "asc" } } },
+    });
+  } catch {
+    return null;
+  }
 }
 
 function mapAvailability(av: string): Product["availability"] {
@@ -83,56 +92,83 @@ function mapDbToProduct(p: NonNullable<DbProduct>): Product {
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  const rows = await prisma.product.findMany({
-    where: { status: "ACTIVE", available: true, productType: "VEHICLE" },
-    include: { category: true, configOptions: { orderBy: { sortOrder: "asc" } } },
-    orderBy: { featured: "desc" },
-  });
-  return rows.map(mapDbToProduct);
+  try {
+    const rows = await prisma.product.findMany({
+      where: { status: "ACTIVE", available: true, productType: "VEHICLE" },
+      include: { category: true, configOptions: { orderBy: { sortOrder: "asc" } } },
+      orderBy: { featured: "desc" },
+    });
+    if (rows.length > 0) return rows.map(mapDbToProduct);
+  } catch {
+    /* fall back to static catalog for Vercel / empty DB */
+  }
+  return staticProducts;
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const row = await fetchDbProduct({ slug });
-  return row ? mapDbToProduct(row) : null;
+  if (row) return mapDbToProduct(row);
+  return staticProducts.find((p) => p.slug === slug) ?? null;
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
   const row = await fetchDbProduct({ id });
-  return row ? mapDbToProduct(row) : null;
+  if (row) return mapDbToProduct(row);
+  return staticProducts.find((p) => p.id === id) ?? null;
 }
 
 export async function getAllAccessories(): Promise<Accessory[]> {
-  const rows = await prisma.product.findMany({
-    where: { status: "ACTIVE", available: true, productType: "ACCESSORY" },
-    orderBy: { name: "asc" },
-  });
-  return rows.map((p) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    price: p.price,
-    image: (JSON.parse(p.images) as string[])[0] ?? "",
-    description: p.description,
-  }));
+  try {
+    const rows = await prisma.product.findMany({
+      where: { status: "ACTIVE", available: true, productType: "ACCESSORY" },
+      orderBy: { name: "asc" },
+    });
+    if (rows.length > 0) {
+      return rows.map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        image: (JSON.parse(p.images) as string[])[0] ?? "",
+        description: p.description,
+      }));
+    }
+  } catch {
+    /* fall back */
+  }
+  return staticAccessories;
 }
 
 export async function getFeaturedProductId(): Promise<string | null> {
-  const featured = await prisma.product.findFirst({
-    where: { featured: true, status: "ACTIVE" },
-    select: { id: true },
-  });
-  return featured?.id ?? null;
+  try {
+    const featured = await prisma.product.findFirst({
+      where: { featured: true, status: "ACTIVE" },
+      select: { id: true },
+    });
+    if (featured?.id) return featured.id;
+  } catch {
+    /* fall back */
+  }
+  return staticFeaturedId;
 }
 
 export async function getCategories() {
-  return prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
+  try {
+    return await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
+  } catch {
+    return [];
+  }
 }
 
 export async function getSpareParts(productId?: string) {
-  return prisma.sparePart.findMany({
-    where: productId ? { productId } : undefined,
-    orderBy: { name: "asc" },
-  });
+  try {
+    return await prisma.sparePart.findMany({
+      where: productId ? { productId } : undefined,
+      orderBy: { name: "asc" },
+    });
+  } catch {
+    return [];
+  }
 }
 
 export async function searchCatalog(query: string) {
@@ -146,69 +182,90 @@ export async function searchCatalog(query: string) {
   const q = query.toLowerCase();
   if (!q) return empty;
 
-  const [products, parts, customers, orders] = await Promise.all([
-    prisma.product.findMany({
-      where: {
-        OR: [
-          { name: { contains: q } },
-          { tagline: { contains: q } },
-          { description: { contains: q } },
-        ],
-        status: "ACTIVE",
-      },
-      take: 8,
-      include: { category: true },
-    }),
-    prisma.sparePart.findMany({
-      where: {
-        OR: [{ name: { contains: q } }, { partNumber: { contains: q } }],
-      },
-      take: 5,
-    }),
-    prisma.customer.findMany({
-      where: {
-        OR: [{ name: { contains: q } }, { email: { contains: q } }, { company: { contains: q } }],
-      },
-      take: 5,
-    }),
-    prisma.order.findMany({
-      where: {
-        OR: [{ orderNumber: { contains: q } }, { email: { contains: q } }],
-      },
-      take: 5,
-    }),
-  ]);
+  try {
+    const [products, parts, customers, orders] = await Promise.all([
+      prisma.product.findMany({
+        where: {
+          OR: [
+            { name: { contains: q } },
+            { tagline: { contains: q } },
+            { description: { contains: q } },
+          ],
+          status: "ACTIVE",
+        },
+        take: 8,
+        include: { category: true },
+      }),
+      prisma.sparePart.findMany({
+        where: {
+          OR: [{ name: { contains: q } }, { partNumber: { contains: q } }],
+        },
+        take: 5,
+      }),
+      prisma.customer.findMany({
+        where: {
+          OR: [{ name: { contains: q } }, { email: { contains: q } }, { company: { contains: q } }],
+        },
+        take: 5,
+      }),
+      prisma.order.findMany({
+        where: {
+          OR: [{ orderNumber: { contains: q } }, { email: { contains: q } }],
+        },
+        take: 5,
+      }),
+    ]);
 
-  return {
-    products: products.map((p) => ({
-      id: p.id,
-      type: "product" as const,
-      name: p.name,
-      subtitle: p.tagline,
-      image: (JSON.parse(p.images) as string[])[0] ?? "",
-      href: `/product/${p.slug}`,
-    })),
-    parts: parts.map((p) => ({
-      id: p.id,
-      type: "part" as const,
-      name: p.name,
-      subtitle: p.partNumber,
-      image: (JSON.parse(p.images) as string[])[0] ?? "",
-      href: `/parts?q=${encodeURIComponent(p.partNumber)}`,
-    })),
-    customers: customers.map((c) => ({
-      id: c.id,
-      type: "customer" as const,
-      name: c.name,
-      subtitle: c.email,
-      href: `/admin/customers?id=${c.id}`,
-    })),
-    orders: orders.map((o) => ({
-      id: o.id,
-      type: "order" as const,
-      name: o.orderNumber,
-      subtitle: `${o.firstName} ${o.lastName}`,
-      href: `/admin/orders?id=${o.id}`,
-    })),
-  };
+    return {
+      products: products.map((p) => ({
+        id: p.id,
+        type: "product" as const,
+        name: p.name,
+        subtitle: p.tagline,
+        image: (JSON.parse(p.images) as string[])[0] ?? "",
+        href: `/product/${p.slug}`,
+      })),
+      parts: parts.map((p) => ({
+        id: p.id,
+        type: "part" as const,
+        name: p.name,
+        subtitle: p.partNumber,
+        image: (JSON.parse(p.images) as string[])[0] ?? "",
+        href: `/parts?q=${encodeURIComponent(p.partNumber)}`,
+      })),
+      customers: customers.map((c) => ({
+        id: c.id,
+        type: "customer" as const,
+        name: c.name,
+        subtitle: c.email,
+        href: `/admin/customers?id=${c.id}`,
+      })),
+      orders: orders.map((o) => ({
+        id: o.id,
+        type: "order" as const,
+        name: o.orderNumber,
+        subtitle: `${o.firstName} ${o.lastName}`,
+        href: `/admin/orders?id=${o.id}`,
+      })),
+    };
+  } catch {
+    const products = staticProducts
+      .filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.tagline.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q)
+      )
+      .slice(0, 8)
+      .map((p) => ({
+        id: p.id,
+        type: "product" as const,
+        name: p.name,
+        subtitle: p.tagline,
+        image: p.images[0] ?? "",
+        href: `/product/${p.slug}`,
+      }));
+
+    return { ...empty, products };
+  }
 }
